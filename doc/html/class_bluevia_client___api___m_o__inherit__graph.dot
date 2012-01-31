@@ -1,0 +1,15 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans.ttf",fontsize="10",labelfontname="FreeSans.ttf",labelfontsize="10"];
+  node [fontname="FreeSans.ttf",fontsize="10",shape=record];
+  Node1 [label="BlueviaClient_Api_MO",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [dir=back,color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="BlueviaClient_Api_Messaging",height=0.2,width=0.4,color="black",URL="$class_bluevia_client___api___messaging.html"];
+  Node3 -> Node2 [dir=back,color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node3 [label="BlueviaClient_Api_Client_Base",height=0.2,width=0.4,color="black",URL="$class_bluevia_client___api___client___base.html"];
+  Node1 -> Node4 [dir=back,color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node4 [label="BlueviaClient_Api_Mmsmo",height=0.2,width=0.4,color="black",URL="$class_bluevia_client___api___mmsmo.html"];
+  Node1 -> Node5 [dir=back,color="midnightblue",fontsize="10",style="solid",fontname="FreeSans.ttf"];
+  Node5 [label="BlueviaClient_Api_Smsmo",height=0.2,width=0.4,color="black",URL="$class_bluevia_client___api___smsmo.html"];
+}
