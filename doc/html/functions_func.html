@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Bluevia: Data Fields - Functions</title>
+<title>PHPSDK: Data Fields - Functions</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -25,8 +25,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="BlueviaLogo.jpg"></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Bluevia&#160;<span id="projectnumber">1.5</span></div>
+   <div id="projectname">PHPSDK&#160;<span id="projectnumber">1.6</span></div>
   </td>
  </tr>
  </tbody>
@@ -59,8 +60,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
-      <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
-      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li class="current"><a href="functions.html"><span>Data&#160;Fields</span></a></li>
     </ul>
   </div>
@@ -68,19 +68,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="functions.html"><span>All</span></a></li>
       <li class="current"><a href="functions_func.html"><span>Functions</span></a></li>
+      <li><a href="functions_vars.html"><span>Variables</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
       <li><a href="#index__"><span>_</span></a></li>
       <li><a href="#index_a"><span>a</span></a></li>
+      <li><a href="#index_b"><span>b</span></a></li>
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_d"><span>d</span></a></li>
+      <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
+      <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_p"><span>p</span></a></li>
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
-      <li><a href="#index_w"><span>w</span></a></li>
+      <li><a href="#index_u"><span>u</span></a></li>
     </ul>
   </div>
 </div>
@@ -101,249 +105,387 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 &#160;
 
 <h3><a class="anchor" id="index__"></a>- _ -</h3><ul>
-<li>__call()
-: <a class="el" href="class_bluevia_client.html#a3815af62ed9d37b2dcaa175379bbfeca">BlueviaClient</a>
-</li>
 <li>__construct()
-: <a class="el" href="class_bluevia_client___api___client___base.html#a20d291a1083da187e53a7c282d754b3a">BlueviaClient_Api_Client_Base</a>
-, <a class="el" href="class_bluevia_client___api___location.html#ae38db07557c8a0b537ab367e0277775b">BlueviaClient_Api_Location</a>
-, <a class="el" href="class_bluevia_client.html#ae54bd7b5a8e2c3b12283aabdffed3a28">BlueviaClient</a>
-, <a class="el" href="class_bluevia_client___api___messaging.html#a20d291a1083da187e53a7c282d754b3a">BlueviaClient_Api_Messaging</a>
-, <a class="el" href="class_bluevia_client___api___directory.html#acbff4e340679c615733d0d84a070c7a4">BlueviaClient_Api_Directory</a>
-, <a class="el" href="class_bluevia_client___api___payment.html#a20d291a1083da187e53a7c282d754b3a">BlueviaClient_Api_Payment</a>
-, <a class="el" href="class_bluevia_client___schemas___user_id_type.html#a6267b5b18684747978a89abbc244a82b">BlueviaClient_Schemas_UserIdType</a>
+: <a class="el" href="class_b_v___advertising.html#a8e44559a98870c45eab9d26a861b11f5">BV_Advertising</a>
+, <a class="el" href="class_b_v___directory.html#ac22028f1009bdbb624da3c91713dd9fe">BV_Directory</a>
+, <a class="el" href="class_b_v___mo_mms.html#a76943c2d4042b7557e90aa5543bfb4a9">BV_MoMms</a>
+, <a class="el" href="class_b_v___o_auth.html#a76943c2d4042b7557e90aa5543bfb4a9">BV_OAuth</a>
+, <a class="el" href="class_attachment.html#ad9d150333c454852b6f5c41adbc7a689">Attachment</a>
+, <a class="el" href="class_b_v___payment.html#a8e44559a98870c45eab9d26a861b11f5">BV_Payment</a>
+, <a class="el" href="class_b_v___mo_sms.html#a76943c2d4042b7557e90aa5543bfb4a9">BV_MoSms</a>
+, <a class="el" href="class_generic___response.html#a8162fdbfe2fc74462f6b0df1322940d4">Generic_Response</a>
+, <a class="el" href="class_h_t_t_p___connector.html#ac76718bcb1055e729ae076900525fd28">HTTP_Connector</a>
+, <a class="el" href="class_b_v___location.html#ac22028f1009bdbb624da3c91713dd9fe">BV_Location</a>
+, <a class="el" href="class_b_v___mt_mms.html#ac22028f1009bdbb624da3c91713dd9fe">BV_MtMms</a>
+, <a class="el" href="class_o_auth___http___connector.html#a4552f9275194133182e6f12d768ab6ef">OAuth_Http_Connector</a>
+, <a class="el" href="class_connector___exception.html#ad01b3d75cf8fc33a13b19dd8b9b562a1">Connector_Exception</a>
+, <a class="el" href="class_b_v___mt_sms.html#ac22028f1009bdbb624da3c91713dd9fe">BV_MtSms</a>
+, <a class="el" href="class_bluevia___exception.html#a14fcb9b1c45767f53ee6b077948993c9">Bluevia_Exception</a>
+, <a class="el" href="class_ad___response.html#a10e59e51f070e2acdc1784fd17217d72">Ad_Response</a>
 </li>
-<li>_checkParameter()
-: <a class="el" href="class_bluevia_client___api___client___base.html#a3b68bf57a1a6523738929d6780d11119">BlueviaClient_Api_Client_Base</a>
+<li>_build_signature()
+: <a class="el" href="class_o_auth___http___connector.html#a286983b0520b47341a4e89466d5dd476">OAuth_Http_Connector</a>
 </li>
-<li>_checkResponse()
-: <a class="el" href="class_bluevia_client___api___client___base.html#a733162d59c505fa794e5ba5c898a84f6">BlueviaClient_Api_Client_Base</a>
+<li>_checkEndpoint()
+: <a class="el" href="class_b_v___base___client.html#afc733440903e72962ec96321d83e9b8d">BV_Base_Client</a>
 </li>
-<li>_checkValue()
-: <a class="el" href="class_bluevia_client___api___client___base.html#a93cdbb6b91e5e859bb4ea8887237b3fc">BlueviaClient_Api_Client_Base</a>
+<li>_createDeliveryInfo()
+: <a class="el" href="class_b_v___mt___client.html#ada4cf08e73909852ce56aad84d845b96">BV_Mt_Client</a>
 </li>
-<li>_get_options()
-: <a class="el" href="class_bluevia_client___api___oauth.html#ad9d83fac7232ef824a6e20396cd439ff">BlueviaClient_Api_Oauth</a>
+<li>_createHeaders()
+: <a class="el" href="class_b_v___mt___client.html#afbe7e4486dbdcb85aba2b577da0288a4">BV_Mt_Client</a>
 </li>
-<li>_getAPIName()
-: <a class="el" href="class_bluevia_client___api___location.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Location</a>
-, <a class="el" href="class_bluevia_client___api___messaging.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Messaging</a>
-, <a class="el" href="class_bluevia_client___api___mmsmo.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Mmsmo</a>
-, <a class="el" href="class_bluevia_client___api___mmsmt.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Mmsmt</a>
-, <a class="el" href="class_bluevia_client___api___oauth.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Oauth</a>
-, <a class="el" href="class_bluevia_client___api___payment.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Payment</a>
-, <a class="el" href="class_bluevia_client___api___smsmo.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Smsmo</a>
-, <a class="el" href="class_bluevia_client___api___smsmt.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Smsmt</a>
-, <a class="el" href="class_bluevia_client___api___advertising.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Advertising</a>
-, <a class="el" href="class_bluevia_client___api___client___base.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Client_Base</a>
-, <a class="el" href="class_bluevia_client___api___directory.html#ac5b6f9c0d67986d2a01a95abca2a1f3e">BlueviaClient_Api_Directory</a>
+<li>_createInfo()
+: <a class="el" href="class_b_v___base___client.html#aa641e3e1450a5f41cf069f3d86d76b16">BV_Base_Client</a>
 </li>
-<li>_getDeliveryReceiptNotificationType()
-: <a class="el" href="class_bluevia_client___api___messaging.html#aca17a67328c51507de409877e7c5969e">BlueviaClient_Api_Messaging</a>
-, <a class="el" href="class_bluevia_client___api___m_o.html#aca17a67328c51507de409877e7c5969e">BlueviaClient_Api_MO</a>
-, <a class="el" href="class_bluevia_client___api___smsmt.html#aca17a67328c51507de409877e7c5969e">BlueviaClient_Api_Smsmt</a>
+<li>_getDeliveryStatusId()
+: <a class="el" href="class_b_v___mt___client.html#ae49047de5966a3f5ad16a6e09ce97967">BV_Mt_Client</a>
 </li>
-<li>_getReceivedMessage()
-: <a class="el" href="class_bluevia_client___api___m_o.html#ac269ccf359c81b1679bee831cfd7fa75">BlueviaClient_Api_MO</a>
+<li>_getLocationHeader()
+: <a class="el" href="class_b_v___base___client.html#ad23f07cba8d599fe2153c6db565d82d8">BV_Base_Client</a>
 </li>
-<li>_processError()
-: <a class="el" href="class_bluevia_client___api___client___base.html#a71d8bfab40c12f1d82f6e5a050ddba42">BlueviaClient_Api_Client_Base</a>
+<li>_parseError()
+: <a class="el" href="class_b_v___base___client.html#a68af88e0ca951b22e60041e1238ec989">BV_Base_Client</a>
+</li>
+<li>_replaceUrlMode()
+: <a class="el" href="class_b_v___base___client.html#a0dd0ff6047c9d4b4a4c40ea680721e5a">BV_Base_Client</a>
 </li>
 <li>_rewriteUrl()
-: <a class="el" href="class_bluevia_client.html#a27e78331e2fa687a2bcaf650c63cd112">BlueviaClient</a>
+: <a class="el" href="class_b_v___base___client.html#a27e78331e2fa687a2bcaf650c63cd112">BV_Base_Client</a>
 </li>
-<li>_RPCRequest()
-: <a class="el" href="class_bluevia_client___api___client___r_p_c.html#a4792a91bba863727fc107599ce0f6298">BlueviaClient_Api_Client_RPC</a>
-, <a class="el" href="class_bluevia_client___api___payment.html#a4b3d672ebf7c92ed506b0be1331d7942">BlueviaClient_Api_Payment</a>
+<li>_send()
+: <a class="el" href="class_b_v___mt___client.html#a743a06a00dae64a1d711ad4c81f5f6b9">BV_Mt_Client</a>
 </li>
-<li>_serializeToXml()
-: <a class="el" href="class_bluevia_client___api___client___r_p_c.html#a06c889e6aefb31d043ebb66b47066f1f">BlueviaClient_Api_Client_RPC</a>
+<li>_set_parameter()
+: <a class="el" href="class_o_auth___http___connector.html#a705a268928fe9143ed4f7e92531d1c13">OAuth_Http_Connector</a>
 </li>
-<li>_setClientConfig()
-: <a class="el" href="class_bluevia_client___api___oauth.html#a06b8d5a5b31caaa2d43c22a5a7826e0c">BlueviaClient_Api_Oauth</a>
+<li>_setBVMessage()
+: <a class="el" href="class_b_v___mo___client.html#aeab2165eb865b19df782952451616755">BV_Mo_Client</a>
 </li>
-<li>_setCommonValues()
-: <a class="el" href="class_bluevia_client___api___messaging.html#a67b87642a9429038c28022a4bb29f07d">BlueviaClient_Api_Messaging</a>
+<li>_setDefaultParameters()
+: <a class="el" href="class_o_auth___http___connector.html#ab935083422f0078e49f89a1423c3e81e">OAuth_Http_Connector</a>
 </li>
-<li>_setToken()
-: <a class="el" href="class_bluevia_client___api___client___base.html#a8ea79a669e32ab32a4b13336db6bb0ca">BlueviaClient_Api_Client_Base</a>
+<li>_setParameters()
+: <a class="el" href="class_b_v___mt_sms___client.html#a525644c3ed8076587f876430f31bae39">BV_MtSms_Client</a>
 </li>
-<li>_simplify_ad()
-: <a class="el" href="class_bluevia_client___api___advertising.html#a4940261abe1866116ad81752b4d10f01">BlueviaClient_Api_Advertising</a>
-</li>
-<li>_simplifyResponse()
-: <a class="el" href="class_bluevia_client___api___client___r_p_c.html#a57b1e651886ab4ee3746b374f9e1e74b">BlueviaClient_Api_Client_RPC</a>
-</li>
-<li>_stopMessageNotification()
-: <a class="el" href="class_bluevia_client___api___m_o.html#a3efd10b9060487462cd7526dc1dbcc4b">BlueviaClient_Api_MO</a>
-</li>
-<li>_transformToUrl()
-: <a class="el" href="class_bluevia_client___api___location.html#a383eae42f45cb27f975520f920cc02ee">BlueviaClient_Api_Location</a>
-</li>
-<li>_verifyTypes()
-: <a class="el" href="class_bluevia_client___api___directory.html#aefd949fe92a6ae68ec4442ad5bc5c521">BlueviaClient_Api_Directory</a>
-</li>
-<li>_verifyValues()
-: <a class="el" href="class_bluevia_client___api___location.html#a36a0a781c55662aee9fe0ad953106b9e">BlueviaClient_Api_Location</a>
+<li>_simplifyDelResponse()
+: <a class="el" href="class_b_v___mt_mms___client.html#ae48f1c85f881a2a1f8cce9c07d82f112">BV_MtMms_Client</a>
+, <a class="el" href="class_b_v___mt___client.html#ae48f1c85f881a2a1f8cce9c07d82f112">BV_Mt_Client</a>
+, <a class="el" href="class_b_v___mt_sms___client.html#ae48f1c85f881a2a1f8cce9c07d82f112">BV_MtSms_Client</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
-<li>addFile()
-: <a class="el" href="class_bluevia_client___api___messaging.html#a5d5ebe13a158bf27951344a93dd12651">BlueviaClient_Api_Messaging</a>
+<li>authenticate()
+: <a class="el" href="interface_i_auth.html#a750c93a7dfab5314f2bf662a407bc5a6">IAuth</a>
+, <a class="el" href="class_o_auth___http___connector.html#a750c93a7dfab5314f2bf662a407bc5a6">OAuth_Http_Connector</a>
 </li>
-<li>addRecipient()
-: <a class="el" href="class_bluevia_client___api___messaging.html#ace970f4a80eee89864d00a3db0ffd1ef">BlueviaClient_Api_Messaging</a>
+<li>autoRedirect()
+: <a class="el" href="class_b_v___o_auth___client.html#ae1740394628e222db039e34a71824ffa">BV_OAuth_Client</a>
 </li>
-<li>assembleParams()
-: <a class="el" href="class_bluevia_client___zend___o_auth___http___request_token.html#a664917ab0ca6ca7e2ab8e07c4a708c54">BlueviaClient_Zend_OAuth_Http_RequestToken</a>
+</ul>
+
+
+<h3><a class="anchor" id="index_b"></a>- b -</h3><ul>
+<li>baseCreate()
+: <a class="el" href="class_b_v___base___client.html#a56f8d53cd141a0c3ffba5925c293899a">BV_Base_Client</a>
+</li>
+<li>baseDelete()
+: <a class="el" href="class_b_v___base___client.html#a352c1b4872a1969cf187d5bd1839c439">BV_Base_Client</a>
+</li>
+<li>baseRetrieve()
+: <a class="el" href="class_b_v___base___client.html#a8594f1da3d70bf25da9c3a25c90f053d">BV_Base_Client</a>
+</li>
+<li>baseUpdate()
+: <a class="el" href="class_b_v___base___client.html#a2a22d90970c1236e8582febb42876986">BV_Base_Client</a>
+</li>
+<li>build_URLEncoded_query()
+: <a class="el" href="class_utils.html#a3145c20fa36b24599af4515d9747deea">Utils</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
 <li>cancelAuthorization()
-: <a class="el" href="class_bluevia_client___api___payment.html#ab4f5e6fd7f1d812c2790edac23b37b97">BlueviaClient_Api_Payment</a>
+: <a class="el" href="class_b_v___payment.html#ab4f5e6fd7f1d812c2790edac23b37b97">BV_Payment</a>
+</li>
+<li>checkAccessParams()
+: <a class="el" href="class_b_v___o_auth___client.html#add3112596f12edd0f3fce5d4e3986888">BV_OAuth_Client</a>
+</li>
+<li>checkCallbackUrl()
+: <a class="el" href="class_b_v___o_auth___client.html#af14b9a83436c6f15148e42c2b485c634">BV_OAuth_Client</a>
+</li>
+<li>checkParameter()
+: <a class="el" href="class_utils.html#ae4f2c84dea293e3982fea5dce3539335">Utils</a>
+</li>
+<li>checkThreeLeggedCredentials()
+: <a class="el" href="class_b_v___base___client.html#a64acb48112cd48c3d56ae99c0a0245e0">BV_Base_Client</a>
+</li>
+<li>checkTwoLeggedCredentials()
+: <a class="el" href="class_b_v___base___client.html#aac92fee47b1cf3192b22a0a928a5139a">BV_Base_Client</a>
+</li>
+<li>composeGetMessagesURL()
+: <a class="el" href="class_b_v___mo___client.html#a925d0aab9e93af5a0d61367408edd4a5">BV_Mo_Client</a>
+</li>
+<li>create()
+: <a class="el" href="interface_i_connector.html#af766aa5ad4b51ec94d824e7c923caf5a">IConnector</a>
+, <a class="el" href="class_h_t_t_p___connector.html#a3b3d6a1796ad64fac801f14f76d2b13c">HTTP_Connector</a>
+</li>
+<li>createDateTime()
+: <a class="el" href="class_utils.html#a94fb479b226322c01d0290c2cd7474aa">Utils</a>
+</li>
+<li>createRequestTokenResponse()
+: <a class="el" href="class_b_v___o_auth___client.html#a2979a8f4b3741792b8201dd58c0478d3">BV_OAuth_Client</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
-<li>doRequest()
-: <a class="el" href="class_bluevia_client.html#a8523a3e54366018abb0f63274136ebe6">BlueviaClient</a>
+<li>delete()
+: <a class="el" href="class_h_t_t_p___connector.html#a67a57419aa4b73a0830fed16a6b0a5ed">HTTP_Connector</a>
+, <a class="el" href="interface_i_connector.html#a34e5a7d72035a5aa455a90a933289831">IConnector</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
+<li>equals()
+: <a class="el" href="class_enumerated.html#a22d7f8ecb0c1a5e010fbbfbef8f31a90">Enumerated</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_g"></a>- g -</h3><ul>
+<li>generateRandomIdentifier()
+: <a class="el" href="class_utils.html#a16cab92db0ad51608818a4e3760afd48">Utils</a>
+</li>
+<li>get_headers()
+: <a class="el" href="class_utils.html#ac1c6ded6a0ed83b1aaa448c247cef59d">Utils</a>
+</li>
+<li>getAccessInfo()
+: <a class="el" href="class_b_v___directory___client.html#a9619471746e512a19d465e1bdcfd0417">BV_Directory_Client</a>
+, <a class="el" href="class_b_v___directory.html#a9619471746e512a19d465e1bdcfd0417">BV_Directory</a>
+</li>
 <li>getAccessToken()
-: <a class="el" href="class_bluevia_client___api___oauth.html#a17dafc19a57a11577a4acd96ed1b1556">BlueviaClient_Api_Oauth</a>
-, <a class="el" href="class_bluevia_client___api___payment.html#a17dafc19a57a11577a4acd96ed1b1556">BlueviaClient_Api_Payment</a>
-, <a class="el" href="class_bluevia_client.html#a5d251c70a3f9f9daaff7f00ec5f894c0">BlueviaClient</a>
+: <a class="el" href="class_b_v___o_auth.html#aa8efcd53b7d0fedb177a74774f3b3f52">BV_OAuth</a>
+, <a class="el" href="class_b_v___o_auth___client.html#aa8efcd53b7d0fedb177a74774f3b3f52">BV_OAuth_Client</a>
+</li>
+<li>getAdditionalData()
+: <a class="el" href="class_connector___exception.html#a01e551d481d0c0cf915e6146bcece3f6">Connector_Exception</a>
+, <a class="el" href="class_generic___response.html#a01e551d481d0c0cf915e6146bcece3f6">Generic_Response</a>
+</li>
+<li>getAdvertising()
+: <a class="el" href="class_b_v___advertising.html#ae6e81ecc4121d0e0c6f3b6310b66a476">BV_Advertising</a>
+, <a class="el" href="class_b_v___advertising___client.html#ae6e81ecc4121d0e0c6f3b6310b66a476">BV_Advertising_Client</a>
+</li>
+<li>getAdvertising2L()
+: <a class="el" href="class_b_v___advertising.html#aa38b8539c8746b4695fde80e1ee43313">BV_Advertising</a>
+, <a class="el" href="class_b_v___advertising___client.html#abaf0d12802b6fccace1970a4030b0cb2">BV_Advertising_Client</a>
+</li>
+<li>getAllMessages()
+: <a class="el" href="class_b_v___mo_mms___client.html#a06755c52ea189476a1ddc546ed5188cd">BV_MoMms_Client</a>
+, <a class="el" href="class_b_v___mo_sms___client.html#a1a8d137af449b07284125c4bd18096d2">BV_MoSms_Client</a>
 </li>
 <li>getAttachment()
-: <a class="el" href="class_bluevia_client___api___mmsmo.html#ac1fe6afbf876df46a22be9d314afca55">BlueviaClient_Api_Mmsmo</a>
+: <a class="el" href="class_b_v___mo_mms___client.html#ae8968565308fa78468d7fe159941869d">BV_MoMms_Client</a>
 </li>
-<li>getContext()
-: <a class="el" href="class_bluevia_client.html#a51609a8c7faaf9948679e3a291ba4733">BlueviaClient</a>
+<li>getCode()
+: <a class="el" href="class_generic___response.html#ab5e24da53b4a0d0848b18c1e832f47ff">Generic_Response</a>
 </li>
 <li>getDeliveryStatus()
-: <a class="el" href="class_bluevia_client___api___m_t.html#afbe40433e1e3512d38d8a4978e4963d1">BlueviaClient_Api_MT</a>
-</li>
-<li>getEnvironment()
-: <a class="el" href="class_bluevia_client.html#a1a945689f9a90f9029d671ec32262d37">BlueviaClient</a>
-</li>
-<li>getHttpClient()
-: <a class="el" href="class_bluevia_client___api___oauth.html#a63733a4237665e20f91b03d8d7fe008e">BlueviaClient_Api_Oauth</a>
-, <a class="el" href="class_bluevia_client.html#a2d33da7f4c2414bdeb504f772d9f5bf8">BlueviaClient</a>
-</li>
-<li>getLastError()
-: <a class="el" href="class_bluevia_client___api___client___base.html#a03582271ad4fdc21fa01a7901bf3605f">BlueviaClient_Api_Client_Base</a>
-</li>
-<li>getLastRequest()
-: <a class="el" href="class_bluevia_client.html#a0e2d8660fa4c6770655f936d3abbe6f4">BlueviaClient</a>
-</li>
-<li>getLastResponse()
-: <a class="el" href="class_bluevia_client.html#ac82bf6d9278349b07b97e8fa7fbddeb8">BlueviaClient</a>
+: <a class="el" href="class_b_v___mt___client.html#a7efe79b84683358846e69990c1b04727">BV_Mt_Client</a>
 </li>
 <li>getLocation()
-: <a class="el" href="class_bluevia_client___api___location.html#a1b90038e7eced7759f630340daebd72a">BlueviaClient_Api_Location</a>
+: <a class="el" href="class_b_v___location.html#ac398bd0509f7b52ee0aae90370b1f5d4">BV_Location</a>
+, <a class="el" href="class_b_v___location___client.html#adf911711b93de4313ed466f843b9db98">BV_Location_Client</a>
 </li>
 <li>getMessage()
-: <a class="el" href="class_bluevia_client___api___m_o.html#a59855add081703c8d7f3945e0cb8934b">BlueviaClient_Api_MO</a>
+: <a class="el" href="class_b_v___mo_mms___client.html#ac890f051dce333c342b754f0629605d4">BV_MoMms_Client</a>
+, <a class="el" href="class_generic___response.html#a0b0e611236742aac18ba1936d03ba89a">Generic_Response</a>
 </li>
-<li>getMessages()
-: <a class="el" href="class_bluevia_client___api___smsmo.html#a86217a710bb994cc7d99df9fd5376b74">BlueviaClient_Api_Smsmo</a>
-, <a class="el" href="class_bluevia_client___api___mmsmo.html#aea68779c7498674efcfb35876933fec1">BlueviaClient_Api_Mmsmo</a>
+<li>getPaymentAccessToken()
+: <a class="el" href="class_b_v___payment.html#a49bcfdfdba5cfb4390f060e69d14241a">BV_Payment</a>
+</li>
+<li>getPaymentRequesttoken()
+: <a class="el" href="class_b_v___payment.html#a6d88daf4015e44216e42eb9dc95707b1">BV_Payment</a>
 </li>
 <li>getPaymentStatus()
-: <a class="el" href="class_bluevia_client___api___payment.html#a1fae73fe3868cc54aab0817302ee1b39">BlueviaClient_Api_Payment</a>
+: <a class="el" href="class_b_v___payment.html#a1fae73fe3868cc54aab0817302ee1b39">BV_Payment</a>
 </li>
-<li>getReceivedSms()
-: <a class="el" href="class_bluevia_client___api___smsmo.html#a5901757eb2a91d1c548b7bd05a0970ab">BlueviaClient_Api_Smsmo</a>
+<li>getPersonalInfo()
+: <a class="el" href="class_b_v___directory.html#ab18695718a5fc710c6a5dc7c29302608">BV_Directory</a>
+, <a class="el" href="class_b_v___directory___client.html#ab18695718a5fc710c6a5dc7c29302608">BV_Directory_Client</a>
 </li>
-<li>getRequestSchemeHeaderClient()
-: <a class="el" href="class_bluevia_client___zend___o_auth___http___request_token.html#addc54dddd44063c3c7e7f0b30939a44b">BlueviaClient_Zend_OAuth_Http_RequestToken</a>
+<li>getProfileInfo()
+: <a class="el" href="class_b_v___directory.html#a66b0a3fea1bc2c27a8b24f57036219b7">BV_Directory</a>
+, <a class="el" href="class_b_v___directory___client.html#a66b0a3fea1bc2c27a8b24f57036219b7">BV_Directory_Client</a>
+</li>
+<li>getReceivedMessages()
+: <a class="el" href="class_b_v___mo___client.html#a1915c0bc18d91f5ffda5d2993b12a3cd">BV_Mo_Client</a>
 </li>
 <li>getRequestToken()
-: <a class="el" href="class_bluevia_client___api___payment.html#a5b755b270caea47de042af09b256d602">BlueviaClient_Api_Payment</a>
-, <a class="el" href="class_bluevia_client___api___oauth.html#ab365771a7667ec4bcc028772aa1e65ef">BlueviaClient_Api_Oauth</a>
+: <a class="el" href="class_b_v___o_auth___client.html#a33b443761c621d9358c84f5397b95141">BV_OAuth_Client</a>
+, <a class="el" href="class_b_v___o_auth.html#a33b443761c621d9358c84f5397b95141">BV_OAuth</a>
 </li>
-<li>getService()
-: <a class="el" href="class_bluevia_client.html#a2488d36323e4b47e0af9bbc6f4772214">BlueviaClient</a>
+<li>getRequestTokenSmsHandshake()
+: <a class="el" href="class_b_v___o_auth.html#a4c5844287be4e1ba890517368ff175f5">BV_OAuth</a>
+, <a class="el" href="class_b_v___o_auth___client.html#a4c5844287be4e1ba890517368ff175f5">BV_OAuth_Client</a>
+</li>
+<li>getTerminalInfo()
+: <a class="el" href="class_b_v___directory.html#a279b0d8d89d899357674240426039650">BV_Directory</a>
+, <a class="el" href="class_b_v___directory___client.html#a279b0d8d89d899357674240426039650">BV_Directory_Client</a>
+</li>
+<li>getToken()
+: <a class="el" href="class_o_auth___http___connector.html#a211a2979c22afcd7d9056a2bb55aa449">OAuth_Http_Connector</a>
+, <a class="el" href="interface_i_o_auth.html#a211a2979c22afcd7d9056a2bb55aa449">IOAuth</a>
 </li>
 <li>getUserInfo()
-: <a class="el" href="class_bluevia_client___api___directory.html#a0cf5a0b1f0083219f19ece49dde93f0a">BlueviaClient_Api_Directory</a>
+: <a class="el" href="class_b_v___directory.html#a4ec3dea9f134b0502e0f1b570b2f5f7c">BV_Directory</a>
+, <a class="el" href="class_b_v___directory___client.html#a4ec3dea9f134b0502e0f1b570b2f5f7c">BV_Directory_Client</a>
+</li>
+<li>getValidValues()
+: <a class="el" href="class_enumerated.html#aadbb1f4224a16fa8e7d244ee4ad018ce">Enumerated</a>
+</li>
+<li>getValue()
+: <a class="el" href="class_enumerated.html#a054563544ca9d65dac0e2692427e9ddc">Enumerated</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
+<li>initTrusted()
+: <a class="el" href="class_b_v___base___client.html#a285373ad1ba67345da3ad85802e88836">BV_Base_Client</a>
+</li>
+<li>initUntrusted()
+: <a class="el" href="class_b_v___base___client.html#a914b049cc0b2a11ff3bcb31edd4b5563">BV_Base_Client</a>
+</li>
+<li>isInteger()
+: <a class="el" href="class_utils.html#a4efcb4dafdf47c001a8c37d7f466bbd5">Utils</a>
+</li>
+<li>isPhoneNumber()
+: <a class="el" href="class_utils.html#abcd112cbf3c77cf24fa2a3ccb12922c7">Utils</a>
+</li>
+<li>isTrusted()
+: <a class="el" href="class_h_t_t_p___connector.html#a96a8064cd821e72852f5387e7d50afad">HTTP_Connector</a>
+</li>
+<li>isTwoLegged()
+: <a class="el" href="class_o_auth___http___connector.html#a112acbc9d9554432ac241617b232ef65">OAuth_Http_Connector</a>
+, <a class="el" href="interface_i_o_auth.html#a112acbc9d9554432ac241617b232ef65">IOAuth</a>
+</li>
+<li>isValid()
+: <a class="el" href="class_enumerated.html#afe7f5b1589f2a0b9bbaab34600de6460">Enumerated</a>
+</li>
+<li>isValidURL()
+: <a class="el" href="class_utils.html#aa026ccf9af1a7bc0c8d65eb0a69b736d">Utils</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
+<li>parse()
+: <a class="el" href="class_generic___parser.html#a14f5c7c62f393ac2f6e297184b0388d0">Generic_Parser</a>
+, <a class="el" href="interface_i_parser.html#a14f5c7c62f393ac2f6e297184b0388d0">IParser</a>
+, <a class="el" href="class_multipart___parser.html#a14f5c7c62f393ac2f6e297184b0388d0">Multipart_Parser</a>
+, <a class="el" href="class_x_m_l___parser.html#a14f5c7c62f393ac2f6e297184b0388d0">XML_Parser</a>
+, <a class="el" href="class_u_r_l_encoded___parser.html#a14f5c7c62f393ac2f6e297184b0388d0">URLEncoded_Parser</a>
+, <a class="el" href="class_r_p_c___parser.html#a14f5c7c62f393ac2f6e297184b0388d0">RPC_Parser</a>
+, <a class="el" href="class_json___parser.html#a14f5c7c62f393ac2f6e297184b0388d0">Json_Parser</a>
+</li>
+<li>parse_parameters()
+: <a class="el" href="class_utils.html#ab98bfb4fc47d6d4b1c03fff4e8175801">Utils</a>
+</li>
 <li>payment()
-: <a class="el" href="class_bluevia_client___api___payment.html#aa6157d8c838fe8310cbcb91a54916c33">BlueviaClient_Api_Payment</a>
+: <a class="el" href="class_b_v___payment.html#aa6157d8c838fe8310cbcb91a54916c33">BV_Payment</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
-<li>request()
-: <a class="el" href="class_bluevia_client___api___advertising.html#ab8aa87d884ba40d5661cda73428d9d22">BlueviaClient_Api_Advertising</a>
-</li>
-<li>reset()
-: <a class="el" href="class_bluevia_client___api___mmsmt.html#a4a20559544fdf4dcb457e258dc976cf8">BlueviaClient_Api_Mmsmt</a>
-, <a class="el" href="class_bluevia_client___api___mmsmo.html#a4a20559544fdf4dcb457e258dc976cf8">BlueviaClient_Api_Mmsmo</a>
-, <a class="el" href="class_bluevia_client___api___messaging.html#a4a20559544fdf4dcb457e258dc976cf8">BlueviaClient_Api_Messaging</a>
+<li>retrieve()
+: <a class="el" href="class_h_t_t_p___connector.html#a8905d3b1f7cc32e84def4b6c7d640940">HTTP_Connector</a>
+, <a class="el" href="interface_i_connector.html#a72df05f4bfa0fad667a6c55dc89a1183">IConnector</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
 <li>send()
-: <a class="el" href="class_bluevia_client___api___mmsmt.html#ab19343b723e53924f9dc933cc57cf880">BlueviaClient_Api_Mmsmt</a>
-, <a class="el" href="class_bluevia_client___api___smsmt.html#ab19343b723e53924f9dc933cc57cf880">BlueviaClient_Api_Smsmt</a>
+: <a class="el" href="class_b_v___mt_mms.html#af88a5b57297d56f7d9ae8cc515cbf68b">BV_MtMms</a>
+, <a class="el" href="class_b_v___mt_sms.html#a1af434a17a383e9e64cbd687f3547012">BV_MtSms</a>
+, <a class="el" href="class_b_v___mt_sms___client.html#ab096afd6c4ac5050eb82ec12df41df3a">BV_MtSms_Client</a>
+, <a class="el" href="class_b_v___mt_mms___client.html#a84457ee0dab6d895f6cde36657d87504">BV_MtMms_Client</a>
 </li>
-<li>setBaseUrl()
-: <a class="el" href="class_bluevia_client.html#a1d31f23da77059ebb2bd56153b35c2fe">BlueviaClient</a>
+<li>serialize()
+: <a class="el" href="class_multipart___serializer.html#a87ff78e4a2acfd959d33aa7cdc42b825">Multipart_Serializer</a>
+, <a class="el" href="class_r_p_c___serializer.html#a87ff78e4a2acfd959d33aa7cdc42b825">RPC_Serializer</a>
+, <a class="el" href="class_generic___serializer.html#a87ff78e4a2acfd959d33aa7cdc42b825">Generic_Serializer</a>
+, <a class="el" href="class_u_r_l_encoded___serializer.html#a87ff78e4a2acfd959d33aa7cdc42b825">URLEncoded_Serializer</a>
+, <a class="el" href="interface_i_serializer.html#a87ff78e4a2acfd959d33aa7cdc42b825">ISerializer</a>
+, <a class="el" href="class_json___serializer.html#a87ff78e4a2acfd959d33aa7cdc42b825">Json_Serializer</a>
 </li>
-<li>setHttpClient()
-: <a class="el" href="class_bluevia_client.html#a338c7bbf415eb0fcc713bb0ec3cf192e">BlueviaClient</a>
+<li>setExtraParameters()
+: <a class="el" href="interface_i_o_auth.html#aa61939d2501298c176e4dd221bdcbc6e">IOAuth</a>
+, <a class="el" href="class_o_auth___http___connector.html#aa61939d2501298c176e4dd221bdcbc6e">OAuth_Http_Connector</a>
 </li>
-<li>setMessage()
-: <a class="el" href="class_bluevia_client___api___messaging.html#a56a4defea30493139bcf5e9b5a500ef6">BlueviaClient_Api_Messaging</a>
+<li>setNotificationName()
+: <a class="el" href="class_b_v___mo___client.html#a350ef542dd793393677463ab914f4b37">BV_Mo_Client</a>
+, <a class="el" href="class_b_v___mo_mms___client.html#a350ef542dd793393677463ab914f4b37">BV_MoMms_Client</a>
+, <a class="el" href="class_b_v___mo_sms___client.html#a350ef542dd793393677463ab914f4b37">BV_MoSms_Client</a>
 </li>
-<li>setRecipient()
-: <a class="el" href="class_bluevia_client___api___messaging.html#a8b0d9046ba295d0dcd4c43e70fdc44a2">BlueviaClient_Api_Messaging</a>
+<li>setParameters()
+: <a class="el" href="class_b_v___directory.html#a006b8ed17c9cdc71597b45696fcde89d">BV_Directory</a>
+, <a class="el" href="class_b_v___payment.html#a006b8ed17c9cdc71597b45696fcde89d">BV_Payment</a>
+, <a class="el" href="class_b_v___advertising___client.html#a006b8ed17c9cdc71597b45696fcde89d">BV_Advertising_Client</a>
+, <a class="el" href="class_b_v___directory___client.html#a006b8ed17c9cdc71597b45696fcde89d">BV_Directory_Client</a>
+, <a class="el" href="class_b_v___location___client.html#a006b8ed17c9cdc71597b45696fcde89d">BV_Location_Client</a>
+, <a class="el" href="class_b_v___mo_mms___client.html#a006b8ed17c9cdc71597b45696fcde89d">BV_MoMms_Client</a>
+, <a class="el" href="class_b_v___mo_sms___client.html#a006b8ed17c9cdc71597b45696fcde89d">BV_MoSms_Client</a>
+, <a class="el" href="class_b_v___o_auth___client.html#a006b8ed17c9cdc71597b45696fcde89d">BV_OAuth_Client</a>
+, <a class="el" href="class_b_v___mt_mms___client.html#a006b8ed17c9cdc71597b45696fcde89d">BV_MtMms_Client</a>
 </li>
-<li>setSubject()
-: <a class="el" href="class_bluevia_client___api___mmsmt.html#a971f2abb85a2e0fc85954322896d6b80">BlueviaClient_Api_Mmsmt</a>
-, <a class="el" href="class_bluevia_client___api___mmsmo.html#a971f2abb85a2e0fc85954322896d6b80">BlueviaClient_Api_Mmsmo</a>
+<li>setToken()
+: <a class="el" href="class_b_v___payment.html#a4f77047d28b3f1c85f4ace0f083bf592">BV_Payment</a>
 </li>
-<li>startMmsNotification()
-: <a class="el" href="class_bluevia_client___api___mmsmo.html#a16bfa67be15142bc3ceaa9b3e0a094e8">BlueviaClient_Api_Mmsmo</a>
+<li>setTokens()
+: <a class="el" href="class_o_auth___http___connector.html#a88a133a170d2d6f18162ea1b1b43132b">OAuth_Http_Connector</a>
 </li>
-<li>startSmsNotification()
-: <a class="el" href="class_bluevia_client___api___smsmo.html#a017a7447d5364d7de5a66ea7daedaedf">BlueviaClient_Api_Smsmo</a>
+<li>simplifyGetAllMessages()
+: <a class="el" href="class_b_v___mo___client.html#a76e6e1e73c54c48b395e1cfeb0dfc1ab">BV_Mo_Client</a>
+, <a class="el" href="class_b_v___mo_sms___client.html#a3db2a2eb5296799c035f9bb041f70efc">BV_MoSms_Client</a>
+, <a class="el" href="class_b_v___mo_mms___client.html#a3db2a2eb5296799c035f9bb041f70efc">BV_MoMms_Client</a>
 </li>
-<li>stopMmsNotification()
-: <a class="el" href="class_bluevia_client___api___mmsmo.html#a386e5897f0cda8e4bfa8b176225eb0de">BlueviaClient_Api_Mmsmo</a>
+<li>simplifyResponse()
+: <a class="el" href="class_b_v___o_auth___client.html#a89c45bca04e42b96e32b457718a7d64b">BV_OAuth_Client</a>
 </li>
-<li>stopSmsNotification()
-: <a class="el" href="class_bluevia_client___api___smsmo.html#a5069b1adfa9b2572407d07de84664ef5">BlueviaClient_Api_Smsmo</a>
+<li>split_header()
+: <a class="el" href="class_utils.html#a16f8fbb4ad60153f3caaf2fb2aba8134">Utils</a>
+</li>
+<li>startNotification()
+: <a class="el" href="class_b_v___mo___client.html#af5caf0789dfea5ab8746b10d93dbf5a4">BV_Mo_Client</a>
+, <a class="el" href="class_b_v___mo_mms___client.html#af5caf0789dfea5ab8746b10d93dbf5a4">BV_MoMms_Client</a>
+, <a class="el" href="class_b_v___mo_sms___client.html#af5caf0789dfea5ab8746b10d93dbf5a4">BV_MoSms_Client</a>
+</li>
+<li>stopNotification()
+: <a class="el" href="class_b_v___mo___client.html#a4adf3939e73c61ed1db3915e187cabc1">BV_Mo_Client</a>
 </li>
 </ul>
 
 
-<h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
-<li>watchdog()
-: <a class="el" href="class_bluevia_client.html#aa971f3cd9512751cb7885c1906275369">BlueviaClient</a>
+<h3><a class="anchor" id="index_u"></a>- u -</h3><ul>
+<li>update()
+: <a class="el" href="class_h_t_t_p___connector.html#a761688546a6f6851e2b8e7df02d1732f">HTTP_Connector</a>
+, <a class="el" href="interface_i_connector.html#a3e4208bbd8adf55900419073bb748437">IConnector</a>
+</li>
+<li>urlencode_rfc3986()
+: <a class="el" href="class_utils.html#a8c8797ae6b68889f302669f4e690ea28">Utils</a>
 </li>
 </ul>
 </div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Mon Jan 23 2012 13:31:21 for Bluevia by&#160;
+      <li class="footer">Generated on Thu May 24 2012 09:22:37 for PHPSDK by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
@@ -353,7 +495,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">

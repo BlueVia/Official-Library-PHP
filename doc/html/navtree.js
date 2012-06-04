@@ -1,78 +1,197 @@
 var NAVTREE =
 [
-  [ "Bluevia", "index.html", [
+  [ "PHPSDK", "index.html", [
     [ "Developer's Guide", "index.html", null ],
     [ "Related Pages", "pages.html", [
-      [ "OAuth API guide", "blv_php_oauth_guide.html", null ],
-      [ "SMS API guide", "blv_php_sms_guide.html", null ],
-      [ "MMS API guide", "blv_php_mms_guide.html", null ],
-      [ "User Context API guide", "blv_php_directory_guide.html", null ],
+      [ "OAuth reference", "blv_php_oauth_guide.html", null ],
+      [ "SMS MO API guide", "blv_php_smsmo_guide.html", null ],
+      [ "SMS MT API guide", "blv_php_smsmt_guide.html", null ],
+      [ "MMS MT API guide", "blv_php_mmsmt_guide.html", null ],
+      [ "MMS MO API guide", "blv_php_mmsmo_guide.html", null ],
+      [ "Directory API guide", "blv_php_directory_guide.html", null ],
       [ "Advertising API guide", "blv_php_ad_guide.html", null ],
       [ "Location API guide", "blv_php_location_guide.html", null ],
       [ "Payment API guide", "blv_php_payment_guide.html", null ]
     ] ],
     [ "Data Structures", "annotated.html", [
-      [ "BlueviaClient", "class_bluevia_client.html", null ],
-      [ "BlueviaClient_Api_Advertising", "class_bluevia_client___api___advertising.html", null ],
-      [ "BlueviaClient_Api_Client_Base", "class_bluevia_client___api___client___base.html", null ],
-      [ "BlueviaClient_Api_Client_RPC", "class_bluevia_client___api___client___r_p_c.html", null ],
-      [ "BlueviaClient_Api_Constants", "class_bluevia_client___api___constants.html", null ],
-      [ "BlueviaClient_Api_Directory", "class_bluevia_client___api___directory.html", null ],
-      [ "BlueviaClient_Api_Location", "class_bluevia_client___api___location.html", null ],
-      [ "BlueviaClient_Api_Messaging", "class_bluevia_client___api___messaging.html", null ],
-      [ "BlueviaClient_Api_Mmsmo", "class_bluevia_client___api___mmsmo.html", null ],
-      [ "BlueviaClient_Api_Mmsmt", "class_bluevia_client___api___mmsmt.html", null ],
-      [ "BlueviaClient_Api_MO", "class_bluevia_client___api___m_o.html", null ],
-      [ "BlueviaClient_Api_MT", "class_bluevia_client___api___m_t.html", null ],
-      [ "BlueviaClient_Api_Oauth", "class_bluevia_client___api___oauth.html", null ],
-      [ "BlueviaClient_Api_Payment", "class_bluevia_client___api___payment.html", null ],
-      [ "BlueviaClient_Api_Smsmo", "class_bluevia_client___api___smsmo.html", null ],
-      [ "BlueviaClient_Api_Smsmt", "class_bluevia_client___api___smsmt.html", null ],
-      [ "BlueviaClient_Exception", "class_bluevia_client___exception.html", null ],
-      [ "BlueviaClient_Exception_Client", "class_bluevia_client___exception___client.html", null ],
-      [ "BlueviaClient_Exception_Parameters", "class_bluevia_client___exception___parameters.html", null ],
-      [ "BlueviaClient_Exception_Response", "class_bluevia_client___exception___response.html", null ],
-      [ "BlueviaClient_Exception_Server", "class_bluevia_client___exception___server.html", null ],
-      [ "BlueviaClient_Messaging_Mimetype", "class_bluevia_client___messaging___mimetype.html", null ],
-      [ "BlueviaClient_MimeContent", "class_bluevia_client___mime_content.html", null ],
-      [ "BlueviaClient_Received_MMS", "class_bluevia_client___received___m_m_s.html", null ],
-      [ "BlueviaClient_Schemas_UserIdType", "class_bluevia_client___schemas___user_id_type.html", null ],
-      [ "BlueviaClient_Zend_OAuth_Http_RequestToken", "class_bluevia_client___zend___o_auth___http___request_token.html", null ]
+      [ "Abstract_Message", "class_abstract___message.html", null ],
+      [ "Access_Fields", "class_access___fields.html", null ],
+      [ "Access_Info", "class_access___info.html", null ],
+      [ "Ad_Presentation", "class_ad___presentation.html", null ],
+      [ "Ad_Response", "class_ad___response.html", null ],
+      [ "Attachment", "class_attachment.html", null ],
+      [ "Attachment_Info", "class_attachment___info.html", null ],
+      [ "Bluevia_Exception", "class_bluevia___exception.html", null ],
+      [ "BV_Advertising", "class_b_v___advertising.html", null ],
+      [ "BV_Advertising_Client", "class_b_v___advertising___client.html", null ],
+      [ "BV_Base_Client", "class_b_v___base___client.html", null ],
+      [ "BV_Constants", "class_b_v___constants.html", null ],
+      [ "BV_Directory", "class_b_v___directory.html", null ],
+      [ "BV_Directory_Client", "class_b_v___directory___client.html", null ],
+      [ "BV_Location", "class_b_v___location.html", null ],
+      [ "BV_Location_Client", "class_b_v___location___client.html", null ],
+      [ "BV_Mimetype", "class_b_v___mimetype.html", null ],
+      [ "BV_Mo_Client", "class_b_v___mo___client.html", null ],
+      [ "BV_Mode", "class_b_v___mode.html", null ],
+      [ "BV_MoMms", "class_b_v___mo_mms.html", null ],
+      [ "BV_MoMms_Client", "class_b_v___mo_mms___client.html", null ],
+      [ "BV_MoSms", "class_b_v___mo_sms.html", null ],
+      [ "BV_MoSms_Client", "class_b_v___mo_sms___client.html", null ],
+      [ "BV_Mt_Client", "class_b_v___mt___client.html", null ],
+      [ "BV_MtMms", "class_b_v___mt_mms.html", null ],
+      [ "BV_MtMms_Client", "class_b_v___mt_mms___client.html", null ],
+      [ "BV_MtSms", "class_b_v___mt_sms.html", null ],
+      [ "BV_MtSms_Client", "class_b_v___mt_sms___client.html", null ],
+      [ "BV_OAuth", "class_b_v___o_auth.html", null ],
+      [ "BV_OAuth_Client", "class_b_v___o_auth___client.html", null ],
+      [ "BV_Payment", "class_b_v___payment.html", null ],
+      [ "Connector_Exception", "class_connector___exception.html", null ],
+      [ "Creative_Element", "class_creative___element.html", null ],
+      [ "Delivery_Info", "class_delivery___info.html", null ],
+      [ "Directory_Data_Sets", "class_directory___data___sets.html", null ],
+      [ "Enumerated", "class_enumerated.html", null ],
+      [ "Generic_Parser", "class_generic___parser.html", null ],
+      [ "Generic_Response", "class_generic___response.html", null ],
+      [ "Generic_Serializer", "class_generic___serializer.html", null ],
+      [ "HTTP_Connector", "class_h_t_t_p___connector.html", null ],
+      [ "IAuth", "interface_i_auth.html", null ],
+      [ "IConnector", "interface_i_connector.html", null ],
+      [ "IOAuth", "interface_i_o_auth.html", null ],
+      [ "IParser", "interface_i_parser.html", null ],
+      [ "ISerializer", "interface_i_serializer.html", null ],
+      [ "Json_Parser", "class_json___parser.html", null ],
+      [ "Json_Serializer", "class_json___serializer.html", null ],
+      [ "Location_Info", "class_location___info.html", null ],
+      [ "Mime_Content", "class_mime___content.html", null ],
+      [ "Mms_Message", "class_mms___message.html", null ],
+      [ "Mms_Message_Info", "class_mms___message___info.html", null ],
+      [ "Multipart_Parser", "class_multipart___parser.html", null ],
+      [ "Multipart_Serializer", "class_multipart___serializer.html", null ],
+      [ "OAuth_Http_Connector", "class_o_auth___http___connector.html", null ],
+      [ "Payment_Result", "class_payment___result.html", null ],
+      [ "Payment_Status_Result", "class_payment___status___result.html", null ],
+      [ "Personal_Fields", "class_personal___fields.html", null ],
+      [ "Personal_Info", "class_personal___info.html", null ],
+      [ "Profile", "class_profile.html", null ],
+      [ "Profile_Fields", "class_profile___fields.html", null ],
+      [ "Protection_Policy", "class_protection___policy.html", null ],
+      [ "Request_Token", "class_request___token.html", null ],
+      [ "RPC_Parser", "class_r_p_c___parser.html", null ],
+      [ "RPC_Serializer", "class_r_p_c___serializer.html", null ],
+      [ "Sms_Message", "class_sms___message.html", null ],
+      [ "Status", "class_status.html", null ],
+      [ "Terminal_Fields", "class_terminal___fields.html", null ],
+      [ "Terminal_Info", "class_terminal___info.html", null ],
+      [ "Token", "class_token.html", null ],
+      [ "URLEncoded_Parser", "class_u_r_l_encoded___parser.html", null ],
+      [ "URLEncoded_Serializer", "class_u_r_l_encoded___serializer.html", null ],
+      [ "User_Info", "class_user___info.html", null ],
+      [ "Utils", "class_utils.html", null ],
+      [ "XML_Parser", "class_x_m_l___parser.html", null ]
     ] ],
     [ "Data Structure Index", "classes.html", null ],
     [ "Class Hierarchy", "hierarchy.html", [
-      [ "BlueviaClient", "class_bluevia_client.html", null ],
-      [ "BlueviaClient_Api_Client_Base", "class_bluevia_client___api___client___base.html", [
-        [ "BlueviaClient_Api_Advertising", "class_bluevia_client___api___advertising.html", null ],
-        [ "BlueviaClient_Api_Client_RPC", "class_bluevia_client___api___client___r_p_c.html", [
-          [ "BlueviaClient_Api_Payment", "class_bluevia_client___api___payment.html", null ]
+      [ "Abstract_Message", "class_abstract___message.html", [
+        [ "Mms_Message_Info", "class_mms___message___info.html", null ],
+        [ "Sms_Message", "class_sms___message.html", null ]
+      ] ],
+      [ "Access_Info", "class_access___info.html", null ],
+      [ "Ad_Response", "class_ad___response.html", null ],
+      [ "Attachment", "class_attachment.html", null ],
+      [ "Attachment_Info", "class_attachment___info.html", null ],
+      [ "Bluevia_Exception", "class_bluevia___exception.html", null ],
+      [ "BV_Base_Client", "class_b_v___base___client.html", [
+        [ "BV_Advertising_Client", "class_b_v___advertising___client.html", [
+          [ "BV_Advertising", "class_b_v___advertising.html", null ]
         ] ],
-        [ "BlueviaClient_Api_Directory", "class_bluevia_client___api___directory.html", null ],
-        [ "BlueviaClient_Api_Location", "class_bluevia_client___api___location.html", null ],
-        [ "BlueviaClient_Api_Messaging", "class_bluevia_client___api___messaging.html", [
-          [ "BlueviaClient_Api_MO", "class_bluevia_client___api___m_o.html", [
-            [ "BlueviaClient_Api_Mmsmo", "class_bluevia_client___api___mmsmo.html", null ],
-            [ "BlueviaClient_Api_Smsmo", "class_bluevia_client___api___smsmo.html", null ]
+        [ "BV_Directory_Client", "class_b_v___directory___client.html", [
+          [ "BV_Directory", "class_b_v___directory.html", null ]
+        ] ],
+        [ "BV_Location_Client", "class_b_v___location___client.html", [
+          [ "BV_Location", "class_b_v___location.html", null ]
+        ] ],
+        [ "BV_Mo_Client", "class_b_v___mo___client.html", [
+          [ "BV_MoMms_Client", "class_b_v___mo_mms___client.html", [
+            [ "BV_MoMms", "class_b_v___mo_mms.html", null ]
           ] ],
-          [ "BlueviaClient_Api_MT", "class_bluevia_client___api___m_t.html", [
-            [ "BlueviaClient_Api_Mmsmt", "class_bluevia_client___api___mmsmt.html", null ],
-            [ "BlueviaClient_Api_Smsmt", "class_bluevia_client___api___smsmt.html", null ]
+          [ "BV_MoSms_Client", "class_b_v___mo_sms___client.html", [
+            [ "BV_MoSms", "class_b_v___mo_sms.html", null ]
           ] ]
         ] ],
-        [ "BlueviaClient_Api_Oauth", "class_bluevia_client___api___oauth.html", null ]
+        [ "BV_Mt_Client", "class_b_v___mt___client.html", [
+          [ "BV_MtMms_Client", "class_b_v___mt_mms___client.html", [
+            [ "BV_MtMms", "class_b_v___mt_mms.html", null ]
+          ] ],
+          [ "BV_MtSms_Client", "class_b_v___mt_sms___client.html", [
+            [ "BV_MtSms", "class_b_v___mt_sms.html", null ]
+          ] ]
+        ] ],
+        [ "BV_OAuth_Client", "class_b_v___o_auth___client.html", [
+          [ "BV_OAuth", "class_b_v___o_auth.html", null ],
+          [ "BV_Payment", "class_b_v___payment.html", null ]
+        ] ]
       ] ],
-      [ "BlueviaClient_Api_Constants", "class_bluevia_client___api___constants.html", null ],
-      [ "BlueviaClient_Exception", "class_bluevia_client___exception.html", [
-        [ "BlueviaClient_Exception_Client", "class_bluevia_client___exception___client.html", null ],
-        [ "BlueviaClient_Exception_Parameters", "class_bluevia_client___exception___parameters.html", null ],
-        [ "BlueviaClient_Exception_Response", "class_bluevia_client___exception___response.html", null ],
-        [ "BlueviaClient_Exception_Server", "class_bluevia_client___exception___server.html", null ]
+      [ "BV_Constants", "class_b_v___constants.html", null ],
+      [ "Connector_Exception", "class_connector___exception.html", null ],
+      [ "Creative_Element", "class_creative___element.html", null ],
+      [ "Delivery_Info", "class_delivery___info.html", null ],
+      [ "Enumerated", "class_enumerated.html", [
+        [ "Access_Fields", "class_access___fields.html", null ],
+        [ "Ad_Presentation", "class_ad___presentation.html", null ],
+        [ "BV_Mimetype", "class_b_v___mimetype.html", null ],
+        [ "BV_Mode", "class_b_v___mode.html", null ],
+        [ "Directory_Data_Sets", "class_directory___data___sets.html", null ],
+        [ "Personal_Fields", "class_personal___fields.html", null ],
+        [ "Profile_Fields", "class_profile___fields.html", null ],
+        [ "Protection_Policy", "class_protection___policy.html", null ],
+        [ "Status", "class_status.html", null ],
+        [ "Terminal_Fields", "class_terminal___fields.html", null ]
       ] ],
-      [ "BlueviaClient_Messaging_Mimetype", "class_bluevia_client___messaging___mimetype.html", null ],
-      [ "BlueviaClient_MimeContent", "class_bluevia_client___mime_content.html", null ],
-      [ "BlueviaClient_Received_MMS", "class_bluevia_client___received___m_m_s.html", null ],
-      [ "BlueviaClient_Schemas_UserIdType", "class_bluevia_client___schemas___user_id_type.html", null ],
-      [ "BlueviaClient_Zend_OAuth_Http_RequestToken", "class_bluevia_client___zend___o_auth___http___request_token.html", null ]
+      [ "Generic_Response", "class_generic___response.html", null ],
+      [ "IAuth", "interface_i_auth.html", [
+        [ "HTTP_Connector", "class_h_t_t_p___connector.html", [
+          [ "OAuth_Http_Connector", "class_o_auth___http___connector.html", null ]
+        ] ],
+        [ "IOAuth", "interface_i_o_auth.html", [
+          [ "OAuth_Http_Connector", "class_o_auth___http___connector.html", null ]
+        ] ]
+      ] ],
+      [ "IConnector", "interface_i_connector.html", [
+        [ "HTTP_Connector", "class_h_t_t_p___connector.html", null ]
+      ] ],
+      [ "IParser", "interface_i_parser.html", [
+        [ "Generic_Parser", "class_generic___parser.html", [
+          [ "Json_Parser", "class_json___parser.html", [
+            [ "Multipart_Parser", "class_multipart___parser.html", null ],
+            [ "RPC_Parser", "class_r_p_c___parser.html", null ]
+          ] ],
+          [ "URLEncoded_Parser", "class_u_r_l_encoded___parser.html", null ]
+        ] ],
+        [ "XML_Parser", "class_x_m_l___parser.html", null ]
+      ] ],
+      [ "ISerializer", "interface_i_serializer.html", [
+        [ "Generic_Serializer", "class_generic___serializer.html", [
+          [ "Json_Serializer", "class_json___serializer.html", [
+            [ "Multipart_Serializer", "class_multipart___serializer.html", null ],
+            [ "RPC_Serializer", "class_r_p_c___serializer.html", null ]
+          ] ],
+          [ "URLEncoded_Serializer", "class_u_r_l_encoded___serializer.html", null ]
+        ] ]
+      ] ],
+      [ "Location_Info", "class_location___info.html", null ],
+      [ "Mime_Content", "class_mime___content.html", null ],
+      [ "Mms_Message", "class_mms___message.html", null ],
+      [ "Payment_Status_Result", "class_payment___status___result.html", [
+        [ "Payment_Result", "class_payment___result.html", null ]
+      ] ],
+      [ "Personal_Info", "class_personal___info.html", null ],
+      [ "Profile", "class_profile.html", null ],
+      [ "Terminal_Info", "class_terminal___info.html", null ],
+      [ "Token", "class_token.html", [
+        [ "Request_Token", "class_request___token.html", null ]
+      ] ],
+      [ "User_Info", "class_user___info.html", null ],
+      [ "Utils", "class_utils.html", null ]
     ] ],
     [ "Data Fields", "functions.html", null ],
     [ "Namespace List", "namespaces.html", [

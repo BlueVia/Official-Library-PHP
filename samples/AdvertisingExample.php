@@ -1,80 +1,79 @@
 <?php
 
-### Set DEBUG true to see the http request and reply headers and content
+// Set DEBUG true to see the response content
 define('DEBUG',true);
 
-### Set your Zend Framework, pear and php local path
-$oldpath = set_include_path('.:/usr/local/zend/share/ZendFramework/library:/usr/local/zend/share/pear:/usr/share/php');
+// Set your pear and php local path. 
+// You must edit this example and complete it with the path in your file system.
+$oldpath = set_include_path('/usr/local/share/pear:/usr/share/php:.');
 
-### Set your BlueviaClient.php path
-include_once "../src/BlueviaClient.php";
+// The path shown above is only for Unix users. If you are using Windows comment the line
+// and include this one instead.
+// $oldpath = set_include_path('.;C:\php\pear');
+
+// Set your Includes.php path
+include_once "../sdk/Includes.php";
+
 
 // BlueVia provides three environments to support the different development stages of your app.
 // Sandbox for testing. Test Live for accessing the live network.
 // Note that test mode is free of charge, you only need  SMS and MMS API credits.
 // You can choose which of them to use depending on the API endpoint you need.
-$mode= BlueviaClient_Api_Constants::SANDBOX_MODE;
+$mode=BV_Mode::SANDBOX;
 
-// PHP SDK wraps any request to BlueVia API's by using a generic object BlueviaClient.
-// This object uses the Component Pattern to fetch any service required by the developer (oAuth, SMS, Directory or Advertising).
-// The BlueviaClient constructor requires an array containing the application consumer key, consumer secret and the access token data
+// The Advertising constructor requires the application consumer key, consumer secret,
+// token and token secret.
 
-$application_context = array(
-    'app' => array(
-      'consumer_key' => 'vw12012654505986', 
-      'consumer_secret' => 'WpOl66570544' 
-),
-	'user' => array(
-      'token_access' => 'ad3f0f598ffbc660fbad9035122eae74', 
-      'token_secret' => '4340b28da39ec36acb4a205d3955a853' 
-)
-);
+$consumerKey = "vw12012654505986";
+$consumerSecret = "WpOl66570544";
 
-$bv = new BlueviaClient($mode,$application_context);
-if ($bv)
-{
-	$advertising=$bv->getService('Advertising');
+$tokenAccess = "ad3f0f598ffbc660fbad9035122eae74";
+$tokenSecret = "4340b28da39ec36acb4a205d3955a853";
 
-	try {
-		print "<table border=\"1\">";
-		
-					
-		// Get your advertising
 
-		$response = $advertising->request(
-			array(
-				'user_agent' => 'Mozilla 5.0', // User agent of the mobile device where the ad
-												  // is going to be shown
-			
-				'ad_space' => 'BV15125',		  // The ad_space value you got when you request your 
-												  // Advertising API
-			
-				'protection_policy' => '1', 	  // The adult control policy.
 
-				'country' => 'AR' 				  // Country where the user using your application 
-												  // is located.
-			)
-		);
+try {
+	print "<table border=\"1\">";
 
-		// Show the returned information, only if DEBUG is set to true
+	// The First step for using the Oauth Api, is to create the Oauth object
 
-		if($response && DEBUG) {
-			print "<h1>Advertising</h1>";
-			print "<p><a href=\"".$response[0]["interaction"]."\"><img src=\"".$response[0]["value"]."\"></a></p>";
-		}
+	$advertising = new BV_Advertising($mode,$consumerKey,$consumerSecret, 
+	$tokenAccess,$tokenSecret);
 
-	} catch(Exception $e) {
+	// Get your image advertising
+
+	$response=$advertising->getAdvertising('BVPoz15595','ImAdId',Ad_Presentation::IMAGE);
+
+	// Show the returned information, only if DEBUG is set to true
+
+	if($response && DEBUG) {
 		print "<h1>Advertising API</h1>";
-		print "<p> Exception: ".$e->getMessage()."</p>";
+		print "<h3>Image advertising</h3>";
+		print "<table border=\"1\">";
+		print "<tr><td>Advertising ID</td><td>$response->id</td></tr>";
+		print "</table>";
+		print "<p><a href=\"".$response->creativeElement->interaction."\">";
+		print "<img src=\"".$response->creativeElement->value."\" alt=\"Adv image\" /></a></p>";
+
 	}
 
-	// Show the http request and reply , only if DEBUG is set to true
+	// Get your text advertising
+
+	$response=$advertising->getAdvertising('BVPoz15595','TxtAdId',Ad_Presentation::TEXT);
 	
-	if (DEBUG){
-		print "<tr><td>Request</td><td>".$bv->getLastRequest()."</td></tr>";
-		print "<tr><td>Response</td><td>".$bv->getLastResponse()."</td></tr>";
+	// Show the returned information, only if DEBUG is set to true
+	if($response && DEBUG) {
+		print "<h3>Text advertising</h3>";
+		print "<table border=\"1\">";
+		print "<tr><td>Advertising ID</td><td>$response->id</td></tr>";
 		print "</table>";
+		print "<p><a href=\"".$response->creativeElement->interaction."\">";
+		print $response->creativeElement->value."</a></p>";
 	}
-	
-	unset($advertising);
+
+} catch(Exception $e) {
+	print "<h1>Advertising API</h1>";
+	print "<p> Exception: ".$e->getMessage()."</p>";
 }
+
+unset($advertising);

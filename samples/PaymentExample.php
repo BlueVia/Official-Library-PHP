@@ -1,124 +1,96 @@
 <?php
-### Set DEBUG true to see the http request and reply headers and content
+
+// Set DEBUG true to see the response content
 define('DEBUG',true);
 
+// Set your pear and php local path. 
+// You must edit this example and complete it with the path in your file system.
+$oldpath = set_include_path('/usr/local/share/pear:/usr/share/php:.');
 
-### Set your Zend Framework, pear and php local path
-$oldpath = set_include_path('.:/usr/local/zend/share/ZendFramework/library:/usr/local/zend/share/pear:/usr/share/php');
-### Set your BlueviaClient.php path
-include_once "../src/BlueviaClient.php";
+// The path shown above is only for Unix users. If you are using Windows comment the line
+// and include this one instead.
+// $oldpath = set_include_path('.;C:\php\pear');
+
+// Set your Includes.php path
+include_once "../sdk/Includes.php";
+
 
 // BlueVia provides three environments to support the different development stages of your app.
 // Sandbox for testing. Test Live for accessing the live network.
 // Note that test mode is free of charge, you only need  SMS and MMS API credits.
 // You can choose which of them to use depending on the API endpoint you need.
-$mode= BlueviaClient_Api_Constants::SANDBOX_MODE;
+$mode=BV_Mode::SANDBOX;
 
-// PHP SDK wraps any request to BlueVia API's by using a generic object BlueviaClient.
-// This object uses the Component Pattern to fetch any service required by the developer (oAuth, SMS, Directory or Advertising).
-// The BlueviaClient constructor requires an array containing the application consumer key, consumer secret and the access token data
+// The Payment constructor when youre application is going to make a payment
+// requires the application consumer key, consumer secret, token and token secret.
+$consumerKey = "XXXXXXXXXXXXXX"; 
+$consumerSecret = "YYYYYYYYYYYYY"; 
+$token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+$tokenSecret='YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY';
 
-$application_context = array(
-    'app' => array(
-      'consumer_key' => 'XXXXXXXXXXX', 
-      'consumer_secret' => 'YYYYYYYYYY'       
-),
-	'user' => array(
-      'token_access' => 'XXXXXXXXXXXXXXXXXXXXX', 
-      'token_secret' => 'YYYYYYYYYYYYYYYYYYYYY' 
-)
-);
-$bv = new BlueviaClient($mode,$application_context);
-if ($bv)
-{
 
-	$payment = $bv->getService('Payment');
 
-	if($payment) {
-		echo "<br><br><table border=\"1\">";
-		try {
+try{
+	// The First step for using the Location Api, is to create the Oauth object
+	$payment= new BV_Payment($mode,$consumerKey,$consumerSecret,$token,$tokenSecret);
 
-			// Make a payment
 
-			$payment_result = $payment->payment("177",	// Amount to be charged.
+	print "<table border=\"1\">";
 
-												"EUR"	// Type of currency which corresponds 
-														// with the amount above.
-			);
-		} catch (Exception $ex) {
-			print "<h1>Payment API</h1>";
-			print "<h3>Payment</h3>";
-			print "Payment exception: ". $ex->getMessage();
+	// Make the payment
+	$paymentResponse= $payment->payment(0,'EUR');
+
+	// Show the returned information, only if DEBUG is set to true
+	if (DEBUG && $paymentResponse) {
+		print "<h1>PAYMENT API</h1>";
+		print "<h3>Payment method</h3>";
+		print "<table border=\"1\">";
+		foreach($paymentResponse as $key => $value){
+			print "<tr><td>$key</td><td>$value</td></tr>";
 		}
-
-		// Show the exception message
-
-		if (!empty($payment_result['type'])){
-			print "<h1>Payment API</h1>";
-			print "<h3>Payment</h3>";
-			print "Payment exception: ". $payment_result['v1:message'];
-		}
-			
-		// Show the http request, reply and content , only if DEBUG is set to true
-			
-		if (DEBUG) {
-			if (!empty($payment_result['transactionId'])){
-				print "<h1>Payment API</h1>";
-				print "<h3>Payment</h3>";
-				print "<tr><td>Transaction ID</td><td>".$payment_result['transactionId']."</td></tr>";
-				print "<tr><td>Transaction status</td><td>".$payment_result['transactionStatus']."</td></tr>";
-				print "<tr><td>Transaction status description</td><td>".$payment_result['transactionStatusDescription']."</td></tr>";
-			}
-			print "<tr><td>Request</td><td>".$bv->getLastRequest()."</td></tr>";
-			print "<tr><td>Response</td><td>".$bv->getLastResponse()."</td></tr>";
-			print "</table>";
-		}
-
-		try {
-
-			// Get payment status
-
-			$payment_status = $payment->getPaymentStatus($payment_result['transactionId']);
-
-		} catch (Exception $ex) {
-			print "<h3>Get payment status</h3>";
-			print "Get payment status exception: " .$ex->getMessage();
-		}
-		
-		// Show the http request, reply and content , only if DEBUG is set to true
-		
-		if (DEBUG) {
-			echo "<br><br><table border=\"1\">";
-			print "<h3>Get payment status</h3>";
-			if ($payment_status){
-				print "<tr><td>Transaction status</td><td>".$payment_status['transactionStatus']."</td></tr>";
-				print "<tr><td>Transaction status description</td><td>".$payment_status['transactionStatusDescription']."</td></tr>";
-			}
-			print "<tr><td>Request</td><td>".$bv->getLastRequest()."</td></tr>";
-			print "<tr><td>Response</td><td>".$bv->getLastResponse()."</td></tr>";
-			print "</table>";
-		}
-
-		try {
-			
-			// Cancel payment authorization
-			
-			$payment->cancelAuthorization();
-			
-		} catch (Exception $ex) {
-			print "<h3>Cancel payment authorization</h3>";
-			print "Cancel payment authorization: " .$ex->getMessage();
-		}
-		
-		// Show the http request, reply and content , only if DEBUG is set to true
-		
-		if (DEBUG) {
-			print "<h3>Cancel payment authorization</h3>";
-			echo "<br><br><table border=\"1\">";
-			print "<tr><td>Request</td><td>".$bv->getLastRequest()."</td></tr>";
-			print "<tr><td>Response</td><td>".$bv->getLastResponse()."</td></tr>";
-			print "</table>";
-		}
-
+		print "</table>";
 	}
+} catch(Exception $e) {
+	print "<h1>Payment ERROR</h1>";
+	print "<h3>Payment method</h3>";
+	print "<p>Exception ". $e->getMessage(). "</p>";
 }
+try{
+	// Get the transaction Id from the payment response
+	$transactionId=$paymentResponse->transactionId;
+
+	// Get the payment Status
+	$paymentStatus=$payment->getPaymentStatus($transactionId);
+
+	// Show the returned information, only if DEBUG is set to true
+	if (DEBUG && $paymentResponse) {
+		print "<h3>Get Payment Status method</h3>";
+		print "<table border=\"1\">";
+		foreach($paymentStatus as $key => $value){
+			print "<tr><td>$key</td><td>$value</td></tr>";
+		}
+		print "</table>";
+	}
+} catch(Exception $e) {
+	print "<h1>Payment ERROR</h1>";
+	print "<h3>Get Payment Status method</h3>";
+	print "<p>Exception". $e->getMessage(). "</p>";
+}
+try{
+	// Cancel payment authorization
+	$response=$payment->cancelAuthorization();
+
+	if (DEBUG && $response) {
+		print "<h3>Cancel Authorization method</h3>";
+		print "Your payment authorization has been cancelled succesfully.";
+	}
+} catch(Exception $e) {
+	print "<h1>Payment ERROR</h1>";
+	print "<h3>Cancel authorization</h3>";
+	print "<p>Exception ". $e->getMessage(). "</p>";
+}
+
+
+
+
+

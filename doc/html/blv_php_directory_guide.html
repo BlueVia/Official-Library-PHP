@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Bluevia: User Context API guide</title>
+<title>PHPSDK: Directory API guide</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -25,8 +25,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="BlueviaLogo.jpg"></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Bluevia&#160;<span id="projectnumber">1.5</span></div>
+   <div id="projectname">PHPSDK&#160;<span id="projectnumber">1.6</span></div>
   </td>
  </tr>
  </tbody>
@@ -72,65 +73,256 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="header">
   <div class="headertitle">
-<h1>User Context API guide </h1>  </div>
+<h1>Directory API guide </h1>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><p>This API enables an application to get information about the user's context, you can get information about user's profile, connection and device.</p>
-<p>If you want to understand how User Context API works please read the <a href="https://bluevia.com/en/knowledge/APIs.API-Guides.GetUserInformation">BlueVia User context information API guide</a>, you can also get really into the details reading <a href="https://bluevia.com/en/knowledge/APIs.API-Reference.GetUserInformation">User context information API reference</a></p>
-<h2><a class="anchor" id="directory_set_up_sec"></a>
-User Information Context API client set up</h2>
-<p>To get profile information at your application you have to set up your client to receive profile information from the user who authorized your app: As detailed in the Programming guidelines , you have to set up your <a class="el" href="class_bluevia_client.html">BlueviaClient</a> object:</p>
-<div class="fragment"><pre class="fragment">application_context = array(
-    <span class="stringliteral">&#39;user&#39;</span> =&gt; array(
-        <span class="stringliteral">&#39;token_access&#39;</span> =&gt; $token,
-        <span class="stringliteral">&#39;token_secret&#39;</span> =&gt; $token_secret,
-    ),
-    <span class="stringliteral">&#39;app&#39;</span> =&gt; array(
-        <span class="stringliteral">&#39;consumer_key&#39;</span> =&gt; CONSUMER_KEY,
-        <span class="stringliteral">&#39;consumer_secret&#39;</span> =&gt; CONSUMER_SECRET        
-    )
-);
-$bv = <span class="keyword">new</span> <a class="code" href="class_bluevia_client.html">BlueviaClient</a>($mode, $application_context);
-</pre></div><p>Once configured, you are able to get your User Context Information API client: </p>
-<div class="fragment"><pre class="fragment"><span class="comment">// Get User Context information API client</span>
-$user_context = $bv-&gt;getService(<span class="stringliteral">&#39;Directory&#39;</span>);
-</pre></div><p>/section directory_getting_profile_sec Getting Profile Information You can get information about the user's customer profile in order to personalize your application or just know more about your users to targetize better your product.</p>
-<p>Once your client is configured to get information from the user, you have to do the following request:</p>
-<div class="fragment"><pre class="fragment"><span class="comment">// User Profile</span>
+<div class="textblock"><h2><a class="anchor" id="blv_directory_api_retrievings_ads_sec"></a>
+Bluevia Directory API: Accessing Directory information</h2>
+<p>The Bluevia Directory API is a set of functions which allows users to retrieve user-related information, divided in four blocks (user profile, access information, personal information and terminal information). This guide represents a practical introduction to developing applications in which the user wants to provide the Bluevia Directory functionality. You can learn more about this API at Bluevia's <a href="https://bluevia.com/en/page/tech.APIs.DirectoryAPI" target="blank">Directory API</a> reference.</p>
+<h3><a class="anchor" id="directory_client_basics_sec"></a>
+Directory client basics</h3>
+<p>A Directory client represents the client side in a classic client-server schema. This object wraps up the underlying REST client side functionality needed to perform requests against a REST server.</p>
+<p>Any Bluevia client performs requests and receives responses in a secure mode. Clients are authorized following the OAuth protocol. This security protocol enables users to grant third-party access to their resources without sharing their passwords. So clients store the authorization data -called security credentials- to grant access to the server. Following sections describe the security credentials we are talking about.</p>
+<h3><a class="anchor" id="creating_directory_client_sec"></a>
+Creating a Directory client: BV_Directory class</h3>
+<p>The first step in using the Directory client is to create an <a class="el" href="class_b_v___directory.html" title="Client interface for the REST binding of the Bluevia Directory Service.">BV_Directory</a> object. As we mentioned earlier this object could have two different working modes: i) as a client which sends requests to a real server, or ii) as a client which sends requests and receives responses to/from a sandbox server.</p>
+<h4><a class="anchor" id="directoryclient_features_working_modes_sec"></a>
+DirectoryClient features: working modes</h4>
+<p>When you create the client, you can specify various working modes: </p>
+<ul>
+<li>
+<p class="startli"><a class="el" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a> <br/>
+In the Live environment your application uses the real network, which means that you will be able to send real transactions to real Movistar, O2 and Vivo customers in the applicable country.</p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli"><a class="el" href="class_b_v___mode.html#a8d7759e13bc0c420f06a21e219e9da76" title="In the Test environment your application uses the real network.">BV_Mode::TEST</a> <br/>
+The Test mode behave exactly like the Live mode, but the API calls are free of chargue, using a credits system. You are required to have a Movistar, O2 or Vivo mobile number to get this monthly credits.</p>
+<p class="endli"></p>
+</li>
+<li>
+<a class="el" href="class_b_v___mode.html#a0bda8698e06a60ea5d2db01f4c0cd488" title="No traffic Generated.">BV_Mode::SANDBOX</a> <br/>
+The Sandbox environment offers you the exact same experience as the Live environment except that no traffic is generated on the live network, meaning you can experiment and play until your heart’s content. </li>
+</ul>
+<h4><a class="anchor" id="directoryclient_features_security_credentials"></a>
+Directory client features: security credentials</h4>
+<p>Bluevia uses OAuth as its authentication mechanism which enables websites and applications to access the Bluevia API's without end users disclosing their personal credentials. In order to grant access to the server any client has to be created passing the security credential as parameter in its constructor. These security credentials are managed internally and added as a HTTP header in every request sent to the server. Such OAuth security credentials are: </p>
+<ul>
+<li>
+<p class="startli"><b>Consumer key</b> <br/>
+The string identifying the application- you obtained when you registered your application within the provisioning portal.</p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli"><b>Consumer secret</b> <br/>
+A secret -a string- used by the consumer to establish ownership of the consumer key.</p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli"><b>Access token</b> <br/>
+The token -a string- used by the client for granting access permissions to the server.</p>
+<p class="endli"></p>
+</li>
+<li>
+<b>Access token secret</b> <br/>
+The secret of the access token. </li>
+</ul>
+<p>To get consumer credentials for your application, visit the API authentication reference for more information about <a href="https://bluevia.com/en/page/tech.howto.tut_APIauth" target="blank">getting Consumer credentials</a>.</p>
+<p>You can learn how to obtain the access tokens <a class="el" href="blv_php_oauth_guide.html">here</a>.</p>
+<h4><a class="anchor" id="directoryclient_features_code_example"></a>
+Directory client features: code example</h4>
+<p>Find below an example on how to create an <a class="el" href="class_b_v___directory.html" title="Client interface for the REST binding of the Bluevia Directory Service.">BV_Directory</a> object taking into account all information previously given.</p>
+<div class="fragment"><pre class="fragment"><span class="comment">// BV_Mode::LIVE indicating the client works against a real Bluevia server.</span>
 <span class="keywordflow">try</span> {
-    $user_info = $user_context-&gt;getUserInfo(BlueviaClient_Api_Directory::USER_PROFILE); 
-     print <span class="stringliteral">&#39;&lt;p style=&quot;color:green&quot;&gt;TEST OK!&#39;</span> . print_r($user_info,1) . <span class="stringliteral">&#39;&lt;/p&gt;&#39;</span>;
-} <span class="keywordflow">catch</span>(Exception $e) {
-     print <span class="stringliteral">&#39;&lt;p style=&quot;color:red&quot;&gt; ERROR on getUserInfo! &#39;</span> . $e-&gt;getMessage() . <span class="stringliteral">&#39;&lt;/p&gt;&#39;</span>;
+        $directoryClient = <span class="keyword">new</span> <a class="code" href="class_b_v___directory.html" title="Client interface for the REST binding of the Bluevia Directory Service.">BV_Directory</a>(<a class="code" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a>, <span class="stringliteral">&quot;consumer_key&quot;</span>, <span class="stringliteral">&quot;consumer_secret&quot;</span>, <span class="stringliteral">&quot;access_token&quot;</span>, <span class="stringliteral">&quot;access_token_secret&quot;</span>);
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e){
+        print $e-&gt;getMessage();
 }
-</pre></div><p>You can get full information on available attributes and its meaning on User Context API guide.</p>
-<h2><a class="anchor" id="directory_getting_access_info_sec"></a>
-Getting Access Information</h2>
-<p>You can get information about the user's network in order to adapt your content or now about the bandwidth available for them. Once your client is configured to get information from the user, you have to do the following request:</p>
-<div class="fragment"><pre class="fragment"><span class="comment">// User Access information</span>
-<span class="keywordflow">try</span> {
-    $user_info = $user_context-&gt;getUserInfo(BlueviaClient_Api_Directory::USER_ACCESS_INFO);
-     print <span class="stringliteral">&#39;&lt;p style=&quot;color:red&quot;&gt;TEST FAILED: &#39;</span> . print_r($user_info,1) . <span class="stringliteral">&#39;&lt;/p&gt;&#39;</span>;
-} <span class="keywordflow">catch</span>(<a class="code" href="class_bluevia_client___exception___parameters.html">BlueviaClient_Exception_Parameters</a> $e) {
-    print <span class="stringliteral">&#39;&lt;p style=&quot;color:green&quot;&gt; TEST OK! &#39;</span> . $e-&gt;getMessage() . <span class="stringliteral">&#39;&lt;/p&gt;&#39;</span>;
+</pre></div><p>For a more detailed description see <a class="el" href="class_b_v___directory.html" title="Client interface for the REST binding of the Bluevia Directory Service.">BV_Directory</a>.</p>
+<h3><a class="anchor" id="retrieving_user_info_sec"></a>
+Retrieving User Info</h3>
+<p>This method retrieves the whole user info resource block from the directory. User profile includes user profile, access, personal and terminal info blocks. The signature of the method is:</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getUserInfo($dataSets=null)
+</pre></div><p>Check the <a class="el" href="class_user___info.html" title="Class to hold the information requested in the BV_Directory_Client::getUserInfo method.">User_Info</a> object to see the information that can be obtained from the <a class="el" href="class_b_v___directory.html#a4ec3dea9f134b0502e0f1b570b2f5f7c" title="Allows an application to get all the user context information.">BV_Directory::getUserInfo</a> method.</p>
+<h4><a class="anchor" id="retrieving_user_info_using_filters_sec"></a>
+Selecting blocks in requests</h4>
+<p>In case the user doesn't want to retrieve all blocks, there is an option to retrieve only a subset of the available information, using filters. The parameter $dataSets can be included in the request selecting the desired info blocks. This parameter must be an array of <a class="el" href="class_directory___data___sets.html" title="Class representing the categories of the returned information by the Directory API.">Directory_Data_Sets</a>. You can only include two or three blocks in the filter. In case you need all blocks, $dataSets parameter must be null. In the next sections we will explain how to request a single data set.</p>
+<h4><a class="anchor" id="user_info_code_example_sec"></a>
+Code examples</h4>
+<p>This is an example for retrieving the whole user info block:</p>
+<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
+        $directoryClient = <span class="keyword">new</span> <a class="code" href="class_b_v___directory.html" title="Client interface for the REST binding of the Bluevia Directory Service.">BV_Directory</a>(<a class="code" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a>, <span class="stringliteral">&quot;consumer_key&quot;</span>, <span class="stringliteral">&quot;consumer_secret&quot;</span>, <span class="stringliteral">&quot;access_token&quot;</span>, <span class="stringliteral">&quot;access_token_secret&quot;</span>);
+        <span class="comment">//Get the UserInfo response</span>
+        $info = $directoryClient-&gt;getUserInfo();
+
+        $profile = $info-&gt;profile;
+        $accessInfo = $info-&gt;accessInfo;
+        $personalInfo = $info-&gt;personalInfo;
+        $terminalInfo = $info-&gt;terminalInfo;    
+        
+        <span class="comment">/* Get information and do stuff */</span>
+          
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting user info: &quot;</span>.$e-&gt;getMessage();
 }
-</pre></div><p>You can get full information on available attributes and its meaning on User Context API guide.</p>
-<h2><a class="anchor" id="directory_getting_device_info_sec"></a>
-Getting Device Information</h2>
-<p>You can get information about the user's device if you want to adapt any content or just adjust your application behaviour to match your user's device capabilities. Once your client is configured to get information from the user, you have to do the following request:</p>
-<div class="fragment"><pre class="fragment"><span class="comment">// Device Information</span>
-<span class="keywordflow">try</span> {
-    $user_info = $user_context-&gt;getUserInfo(BlueviaClient_Api_Directory::USER_TERMINAL_INFO);
-     print <span class="stringliteral">&#39;&lt;p style=&quot;color:red&quot;&gt;TEST FAILED: &#39;</span> . print_r($user_info,1) . <span class="stringliteral">&#39;&lt;/p&gt;&#39;</span>;
-} <span class="keywordflow">catch</span>(<a class="code" href="class_bluevia_client___exception___parameters.html">BlueviaClient_Exception_Parameters</a> $e) {
-    print <span class="stringliteral">&#39;&lt;p style=&quot;color:green&quot;&gt; TEST OK! &#39;</span> . $e-&gt;getMessage() . <span class="stringliteral">&#39;&lt;/p&gt;&#39;</span>;
+</pre></div><p>For filtering blocks, you have to include the data sets you want to retrieve. This is an example:</p>
+<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
+        <span class="comment">//Select data sets</span>
+        $dataSet = array(Directory_Data_Sets::ACCESS_INFO, Directory_Data_Sets::PERSONAL_INFO);
+        
+        <span class="comment">//Get the UserInfo response</span>
+        $info = $directoryClient-&gt;getUserInfo($dataSet);
+
+        $accessInfo = $info-&gt;accessInfo;
+        $terminalInfo = $info-&gt;terminalInfo;    
+        
+        <span class="comment">/* Get information and do stuff */</span>
+          
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting user info: &quot;</span>.$e-&gt;getMessage();
 }
-</pre></div><p>You can get full information on available attributes and its meaning on User Context API guide. </p>
-</div></div>
+</pre></div><p>Individual blocks can be obtained through its own method, as can be seen below:</p>
+<h3><a class="anchor" id="retrieving_user_profile_sec"></a>
+Retrieving user profile</h3>
+<p>This method retrieves the user profile resource block from the directory. User profile includes payment options, subscription to services, customer type and other operator related information. The signature of the method is:</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getProfile($fields=null)
+</pre></div><p>Check the <a class="el" href="class_profile.html" title="Class to hold the information requested in the BV_Directory_Client::getProfileInfo method...">Profile</a> object to see the information that can be obtained from the BV_Directory::getProfile method.</p>
+<h4><a class="anchor" id="retrieving_user_profile_using_filters_sec"></a>
+Using filters in requests</h4>
+<p>In case the user doesn't want to retrieve the whole block, there is an option to retrieve only a subset of the available information, using filters. An array of <a class="el" href="class_profile___fields.html" title="Enumerated class representing the Profile fields supported by Bluevia.">Profile_Fields</a> can be included in the request selecting the desired info blocks:</p>
+<h4><a class="anchor" id="user_profile_code_example_sec"></a>
+Code examples</h4>
+<p>This is an example for retrieving the whole user profile block:</p>
+<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
+        <span class="comment">//Get the Profile response</span>
+        $profile = $directoryClient-&gt;getProfile();
+
+        <span class="comment">/* Get information and do stuff */</span>
+          
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting user profile: &quot;</span>.$e-&gt;getMessage();
+}
+</pre></div><p>For filtering information, you have to include the fields you want to retrieve. This is an example:</p>
+<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
+        <span class="comment">//Set the fields</span>
+        $fields = array(<a class="code" href="class_profile___fields.html#ac3640980b7f46abdfb91fcb6202c4808" title="it indicates the billing conditions of the user (pre-paid, post-paid, corporate, etc.)">Profile_Fields::USER_TYPE</a>, <a class="code" href="class_profile___fields.html#a6abfbafbf6e2ff25336a7a1716a764b1" title="it indicates if the parental control is activated and the associated control level.">Profile_Fields::PARENTAL_CONTROL</a>, <a class="code" href="class_profile___fields.html#ab68f386b11adb6aee110c2f72c97b8ee" title="It indicates the operator the user belongs to.">Profile_Fields::OPERATOR_ID</a>};
+        
+        <span class="comment">//Get the Profile response</span>
+        $profile = $directoryClient-&gt;getProfile($fields);
+
+        <span class="comment">/* Get information and do stuff */</span>
+        $userType = $profile-&gt;userType;
+          
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting user profile: &quot;</span>.$e-&gt;getMessage();
+}
+</pre></div><h3><a class="anchor" id="retrieving_user_access_info_sec"></a>
+Retrieving user access information</h3>
+<p>This method retrieves the whole user access information resource block from the directory. User access information correspond to the user connection profile and includes information like the access connection type, APN, roaming status, etc. The signature of the method is:</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getAccessInfo($fields=null) 
+</pre></div><p>Check the <a class="el" href="class_access___info.html" title="Class to hold the information requested in the BV_Directory_Client::getAccessInfo method...">Access_Info</a> object to see the information that can be obtained from <a class="el" href="class_b_v___directory.html#a9619471746e512a19d465e1bdcfd0417" title="Retrieves User Access Information resource block from the directory.">BV_Directory::getAccessInfo</a> method.</p>
+<h4><a class="anchor" id="user_access_info_using_filters_sec"></a>
+Using filters in requests</h4>
+<p>In case the user doesn't want to retrieve the whole block, there is an option to retrieve only a subset of the available information, using filters. An array of <a class="el" href="class_access___fields.html" title="Enumerated class representing the AccessInfo fields supported by Bluevia.">Access_Fields</a> can be included in the request selecting the desired info blocks.</p>
+<h4><a class="anchor" id="user_access_info_code_example_sec"></a>
+Code examples</h4>
+<p>This is an example for retrieving the whole user access information block:</p>
+<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
+        <span class="comment">//Get the Access Info response</span>
+        $accessInfo = $directoryClient-&gt;getAccessInfo();
+
+        <span class="comment">/* Get information and do stuff */</span>
+          
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting access info: &quot;</span>.$e-&gt;getMessage();
+}
+</pre></div><p>For filtering information, you have to include the fields you want to retrieve. This is an example:</p>
+<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
+        <span class="comment">//Set the fields</span>
+        $fields = array(<a class="code" href="class_access___fields.html#ac5951a20c0c11c7bb5e65d038ec0dce2" title="it indicates the access network used to get connected.">Access_Fields::ACCESS_TYPE</a>, <a class="code" href="class_access___fields.html#a4289cfa181946ae0fa5d41cd20d143a3" title="Access Point Name.">Access_Fields::APN</a>};
+        
+        <span class="comment">//Get the AccessInfo response</span>
+        $accessInfo = $directoryClient-&gt;getAccessInfo($fields);
+
+        <span class="comment">/* Get information and do stuff */</span>
+        $accessType = $accessInfo-&gt;accessType;
+          
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting personal info: &quot;</span>.$e-&gt;getMessage();
+}
+</pre></div><h3><a class="anchor" id="retrieving_user_personal_info_sec"></a>
+Retrieving user personal information</h3>
+<p>This method retrieves the whole user personal information resource block from the directory. This block includes personal information about the user, such as the gender. The signature of the method is:</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getPersonalInfo() 
+</pre></div><p>Check the <a class="el" href="class_personal___info.html" title="Class to hold the information requested in the BV_Directory_Client::getPersonalInfo method...">Personal_Info</a> object to see the information that can be obtained from the <a class="el" href="class_b_v___directory.html#ab18695718a5fc710c6a5dc7c29302608" title="Retrieves a subset of the User Personal Information resource block from the directory.">BV_Directory::getPersonalInfo</a> method.</p>
+<h4><a class="anchor" id="user_personal_info_using_filters_sec"></a>
+Using filters in requests</h4>
+<p>In case the user doesn't want to retrieve the whole block, there is an option to retrieve only a subset of the available information, using filters. An array of <a class="el" href="class_personal___fields.html" title="Enumerated class representing the PersonalInfo fields supported by Bluevia.">Personal_Fields</a> can be included in the request selecting the desired info blocks:</p>
+<h4><a class="anchor" id="user_personal_info_code_examples_sec"></a>
+Code examples</h4>
+<p>This is an example for retrieving the user personal info:</p>
+<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
+        <span class="comment">//Get the PersonalInfo response</span>
+        $personalInfo = $directoryClient-&gt;getPersonalInfo();
+
+        <span class="comment">/* Get information and do stuff */</span>
+          
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting personal info: &quot;</span>.$e-&gt;getMessage();
+}
+</pre></div><p>For filtering information, you have to include the fields you want to retrieve. This is an example:</p>
+<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
+        <span class="comment">//Set the fields</span>
+        $fields = array(<a class="code" href="class_personal___fields.html#a7bd6c54abcad56b29df784179847da13" title="the gender of the user">Personal_Fields::GENDER</a>);
+        
+        <span class="comment">//Get the PersonalInfo response</span>
+        $personalInfo = $directoryClient-&gt;getPersonalInfo($fields);
+
+        <span class="comment">/* Get information and do stuff */</span>
+        $gender = $personalInfo-&gt;gender;
+          
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting personal info: &quot;</span>.$e-&gt;getMessage();
+}
+</pre></div><h3><a class="anchor" id="retrieving_user_terminal_info_sec"></a>
+Retrieving user terminal information</h3>
+<p>This method retrieves the whole user terminal information resource block from the directory. This block includes information about the terminal being used by the end-user. The signature of the method is:</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getTerminalInfo($fields = null)
+</pre></div><p>Check the <a class="el" href="class_terminal___info.html" title="Class to hold the information requested in the BV_Directory_Client::getTerminalInfo method...">Terminal_Info</a> object to see the information that can be obtained from the <a class="el" href="class_b_v___directory.html#a279b0d8d89d899357674240426039650" title="Retrieves User Terminal Information resource block from the directory.">BV_Directory::getTerminalInfo</a> method.</p>
+<h4><a class="anchor" id="user_terminal_info_using_filters_sec"></a>
+Using filters in requests</h4>
+<p>In case the user doesn't want to retrieve the whole block, there is an option to retrieve only a subset of the available information, using filters. An array of <a class="el" href="class_terminal___fields.html" title="Enumerated class representing the TerminalInfo fields supported by Bluevia.">Terminal_Fields</a> can be included in the request selecting the desired info blocks:</p>
+<h4><a class="anchor" id="user_terminal_info_code_examples_sec"></a>
+Code examples</h4>
+<p>This is an example for retrieving the user terminal info:</p>
+<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
+        <span class="comment">//Get the TerminalInfo response</span>
+        $terminalInfo = $directoryClient-&gt;getTerminalInfo();
+
+        <span class="comment">/* Get information and do stuff */</span>
+          
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting terminal info: &quot;</span>.$e-&gt;getMessage();
+}
+</pre></div><p>For filtering information, you have to include the fields you want to retrieve. This is an example:</p>
+<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
+        <span class="comment">//Set the fields</span>
+        $fields = array(<a class="code" href="class_terminal___fields.html#a838e537064193c12a0ee92b64cf61797" title="vendor of the device">Terminal_Fields::BRAND</a>, <a class="code" href="class_terminal___fields.html#a5b3f890200f757fae7f62a66f96a6f63" title="model s name">Terminal_Fields::MODEL</a>, <a class="code" href="class_terminal___fields.html#a33b7b4826758d64c0362abf3f9413c92" title="yes/no field that indicates if the device supports MMS client or not.">Terminal_Fields::MMS</a>, <a class="code" href="class_terminal___fields.html#a681c2e455db0a6f4bdee31361376bae4" title="yes/no field that indicates if the device supports WAP or not.">Terminal_Fields::WAP</a>, <a class="code" href="class_terminal___fields.html#a7c9b2eb334f52edd492c7478c4ccf575" title="screen resolution in pixels">Terminal_Fields::SCREEN_RESOLUTION</a>};
+        
+        <span class="comment">//Get the TerminalInfo response</span>
+        $terminalInfo = $directoryClient-&gt;getTerminalInfo($fields);
+
+        <span class="comment">/* Get information and do stuff */</span>
+        $brand = $terminalInfo-&gt;brand;
+          
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting terminal info: &quot;</span>.$e-&gt;getMessage();
+}
+</pre></div> </div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Mon Jan 23 2012 13:31:21 for Bluevia by&#160;
+      <li class="footer">Generated on Thu May 24 2012 09:22:37 for PHPSDK by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
@@ -140,7 +332,7 @@ Getting Device Information</h2>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">

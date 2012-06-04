@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Bluevia: Developer&#39;s Guide</title>
+<title>PHPSDK: Developer&#39;s Guide</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -25,8 +25,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="BlueviaLogo.jpg"></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Bluevia&#160;<span id="projectnumber">1.5</span></div>
+   <div id="projectname">PHPSDK&#160;<span id="projectnumber">1.6</span></div>
   </td>
  </tr>
  </tbody>
@@ -75,75 +76,151 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1>Developer's Guide </h1>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><h2><a class="anchor" id="getting_started_system_req_sec"></a>
-System requirements</h2>
+<div class="textblock"><h2><a class="anchor" id="developer_guide_abstract_sec"></a>
+Abstract</h2>
+<p>Bluevia is the global developer platform from Telefonica that helps developers take apps, web services and ideas to market. Bluevia makes it easy for your application to access our network APIs. This includes payments, communications and much more, available using web technologies like RESTful API's and OAuth. PHP for BlueVia allows you to use the BueVia public API from your PHP application using just few lines of code. You can learn more about Bluevia <a href="www.bluevia.com">here</a>.</p>
+<h2><a class="anchor" id="getting_started_sec"></a>
+Getting started</h2>
+<p>This section explains how to prepare your development environment to start working with the Bluevia PHP SDK. First check out the system requirements that your computer must meet, and then follow the installation steps. Once you have finished you will be able to develop your first PHP application using the functionality provided by Bluevia APIs.</p>
+<p>System requeriments</p>
+<p>The Bluevia library for PHP is prepared and has been tested to develop applications under PHP 5.3 version. PHP SDK is the only system requirement for the Bluevia library. The following system requirements are the ones your computer needs to meet to be able to work with the PHP SDK:</p>
+<p>Tested Operating Systems: </p>
 <ul>
 <li>
-<a href="http://php.net/manual/en/book.curl.php" target="blank">PHP Curl extension</a>. </li>
+Mac OS X 10.6.8 </li>
 <li>
-<a href="http://framework.zend.com/" target="blank">Zend Framework &gt;= 1.10</a>. </li>
+Linux (tested on Linux Ubuntu) </li>
+<li>
+Windows (tested on Windows XP) </li>
 </ul>
+<p>Developing environment: </p>
+<ul>
+<li>
+<a href="http://www.php.net/">PHP 5.3</a> </li>
+<li>
+<a href="http://www.eclipse.org">Eclipse PDT</a> for PHP developers. </li>
+</ul>
+<p>The following <a href="http://pear.php.net/manual/en/">PEAR</a> packages are required:</p>
+<ul>
+<li>
+<a href="http://pear.php.net/package/HTTP_Request2/">HTTP_Request2.</a> </li>
+<li>
+<a href="http://pear.php.net/package/Mail_mimeDecode/">Mail_mimeDecode.</a> </li>
+</ul>
+<h3><a class="anchor" id="getting_started_sec_step1"></a>
+Step 1: Preparing the PHP environment</h3>
+<p>The first step to start developing applications is setting up your PHP environment. If you have already prepared your computer to develop PHP applications you can skip to step 2; otherwise follow the next instructions: </p>
+<ol>
+<li>
+Prepare your development computer and ensure it meets the system requirements. </li>
+<li>
+Install <a href="http://php.net/manual/en/install.php">PHP</a>. </li>
+<li>
+Install <a href="http://www.eclipse.org/pdt/downloads/">Eclipse PDT</a> (if you'll be developing in Eclipse). </li>
+<li>
+Once you have installed PHP you'lll have to install the pear packages listed above. You can find complete information on how to install pear packages <a href="http://pear.php.net/manual/en/installation.php">here</a>. </li>
+<li>
+Note that BlueVia APIs must be invoked using HTTPS (HTTP over SSL/TLS). HTTP connections are not allowed. You must enable openssl extension in your php configuration </li>
+</ol>
+<h3><a class="anchor" id="getting_started_sec_step2"></a>
+Step 2: Download Bluevia library for PHP and create the project</h3>
+<p><a href="https://github.com/BlueVia/Official-Library-PHP">Bluevia SDK for PHP</a></p>
+<ol>
+<li>
+Create your PHP Project in Eclipse: select File &gt; New &gt; PHP Project. </li>
+<li>
+Introduce the project name and click Finish. </li>
+</ol>
+<h3><a class="anchor" id="getting_started_sec_step3"></a>
+Step 3: Setting the include path:</h3>
+<p>Include the Bluevia Library and the PEAR packages into the include path. You must include the following lines in your project:</p>
+<p>Unix users: </p>
+<div class="fragment"><pre class="fragment">  set_include_path(<span class="stringliteral">&quot;.:path/to/pear/package:path/to/bluevia/sdk&quot;</span>);
+  include_once <span class="stringliteral">&#39;sdk/Includes.php&#39;</span>;
+</pre></div><p>Windows users: </p>
+<div class="fragment"><pre class="fragment">  set_include_path(<span class="stringliteral">&quot;.;path\to\pear\package;path\to\bluevia\sdk&quot;</span>);
+  include_once <span class="stringliteral">&#39;sdk/Includes.php&#39;</span>;
+</pre></div><p>Remember the include path must be the path were you downloaded PEAR packages and the one with Bluevia's SDK separated with a colon character <b>( : )</b> (Unix users) or with a semicolon character <b>( ; )</b> (Windows users).</p>
+<p>If you are using Eclipse, in order to provide proper auto completion and error checking, you can add the Bluevia external libraries to the include paths option: </p>
+<ol>
+<li>
+Select Project &gt; Properties &gt; PHP Include Path </li>
+<li>
+Select libraries &gt; Add External Folder </li>
+<li>
+Search for the path to Bluevia's SDK </li>
+<li>
+Click OK. </li>
+</ol>
 <h2><a class="anchor" id="programming_guidelines_sec"></a>
 Programming guidelines</h2>
 <p>This section is a basic introduction to the Bluevia framework. This guide explains the library behavior and architecture, its working modes and the security model, based in OAuth, and how to start developing and testing PHP applications using the Bluevia APIs. In the API guides section several complete code examples for each API will be provided.</p>
 <p>In order to complete the documentation of the Bluevia library, you should check the Reference section for API specifications.</p>
 <h3><a class="anchor" id="programming_guidelines_framework_sec"></a>
 Bluevia library framework</h3>
-<p>PHP for BlueVia allows you to use the BueVia public API from your PHP application using just few lines of code. The library makes use of Zend Framework classes, more specifically <a href="http://framework.zend.com/manual/en/zend.http.html">Zend_Http</a> and <a href="http://framework.zend.com/manual/en/zend.oauth.html">Zend_Oauth</a>.</p>
-<p>When you want to use Bluevia public APIs as a developer, first of all you will need to get an API Key from <a href="https://bluevia.com.">https://bluevia.com.</a></p>
-<p>PHP SDK wraps requests to BlueVia APIs by using the generic object <a class="el" href="class_bluevia_client.html">BlueviaClient</a>. This object uses the Component Pattern to fetch any service required by the developer (oAuth, SMS, MMS, Directory, Advertising, Location or Payment).</p>
-<p>To define functionality required for each API keys, three modes (live, sandbox or test) can be selected when creating the BlueVia client. Live and test environment are connected to Movistar and O2 network, and sandbox is used just on development stage to verify application behavior. You can get more information on that point at <a href="https://bluevia.com/en/knowledge/getStarted.Sandbox-and-Live-environments">Live, Test and Sandbox</a> First of all choose one of the three modes:</p>
-<div class="fragment"><pre class="fragment">        $mode = Bluevia_Api_Contants::TEST_MODE;
-</pre></div><p> or </p>
-<div class="fragment"><pre class="fragment">        $mode = Bluevia_Api_Contants::SANDBOX_MODE;
-</pre></div><p> or </p>
-<div class="fragment"><pre class="fragment">        $mode = Bluevia_Api_Contants::LIVE_MODE;
-</pre></div><p>The next step is creating a new object with valid credentials that identify the application:</p>
-<div class="fragment"><pre class="fragment">  $application_context = array(
-    <span class="stringliteral">&#39;app&#39;</span> =&gt; array(
-      <span class="stringliteral">&#39;consumer_key&#39;</span> =&gt; CONSUMER_KEY,
-      <span class="stringliteral">&#39;consumer_secret&#39;</span> =&gt; CONSUMER_SECRET
-    )
-  );
-  $bv = <span class="keyword">new</span> <a class="code" href="class_bluevia_client.html">BlueviaClient</a>($mode,$application_context);
-</pre></div><h3><a class="anchor" id="programming_guidelines_oauth_sec"></a>
-Using OAuth</h3>
-<p>User authentication is performed using oAuth protocol, so user is not required to use credentials in third party applications. If you want to learn more about oAuth please check this URL: <a href="http://oauth.net.">http://oauth.net.</a></p>
-<p>When an user wants to launch the oAuth process, once the Bluevia client object has been created only the two lines below are required to retrieve a valid token for user: </p>
-<div class="fragment"><pre class="fragment">  $oauth = $bv-&gt;getService(<span class="stringliteral">&#39;Oauth&#39;</span>);
-  $token = $oauth-&gt;getRequestToken(APP_URL);
-</pre></div><p> The retrieved parameter token and secret should be used during the oAuth process, and url is the endpoint where Bluevia shall authenticate the user. In case of a PHP application, it is automatically performed using Zend_Oauth library.</p>
-<p>Both token and token_secret must be saved in the client side because oAuth process will require it later. They are stored inside library wrapper: Oauth.php as a cookie. </p>
-<div class="fragment"><pre class="fragment">  setcookie(<span class="stringliteral">&#39;req_token&#39;</span>, serialize($token), null, <span class="charliteral">&#39;/&#39;</span>);
-</pre></div><p>Once user is authenticated and he has authorized the application in BlueVia portal, he should be redirected to the URL used as parameter before (APP_URL). Now it's time to fetch the valid token and token secret that shall identify the new user during any call to BlueVia API. Lines below show an example using PHP: </p>
-<div class="fragment"><pre class="fragment">  $oauth_verifier = $_GET[<span class="stringliteral">&#39;oauth_verifier&#39;</span>];
-  $returned = $oauth-&gt;getAccessToken($oauth_verifier);
-</pre></div><p> If token verifier is bad, or cookie has been lost, then <a class="el" href="class_bluevia_client___exception___parameters.html">BlueviaClient_Exception_Parameters</a> is thrown.</p>
-<h3><a class="anchor" id="programming_guidelines_using_oauth_sec"></a>
-Using OAuth to launch requests</h3>
-<p>Most of requests when accessing Bluevia API are associated to a specific user, so when a <a class="el" href="class_bluevia_client.html">BlueviaClient</a> object is created both user token and user token secret must be provided to identify user on behalf of whom the application wants to access BlueVia APIs. It is responsibility of the application to store it and they are send instantiating Unica API. </p>
-<div class="fragment"><pre class="fragment">  $application_context = array(
-    <span class="stringliteral">&#39;user&#39;</span> =&gt; array(
-      <span class="stringliteral">&#39;token_access&#39;</span> =&gt; TOKEN,
-      <span class="stringliteral">&#39;token_secret&#39;</span> =&gt; TOKEN_SECRET,
-    ),
-    <span class="stringliteral">&#39;app&#39;</span> =&gt; array(
-      <span class="stringliteral">&#39;consumer_key&#39;</span> =&gt; CONSUMER_KEY,
-      <span class="stringliteral">&#39;consumer_secret&#39;</span> =&gt; CONSUMER_SECRET        
-    )
-  );
-
-  $bv = <span class="keyword">new</span> <a class="code" href="class_bluevia_client.html">BlueviaClient</a>($mode,$application_context);
-</pre></div><h2><a class="anchor" id="api_guides_sec"></a>
-API guides</h2>
+<p>The Bluevia library for PHP architecture is mainly composed of three modules:</p>
+<ul>
+<li>
+<p class="startli">An abstract data client, or connector, that performs the low level operations required to retrieve data from the remote servers. This layer is responsible for generating and propagating exceptions or error codes to the upper levels, were they needed.</p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli">A client interface layer. This layer provides the interfaces, abstract classes and generic classes needed to implement specific clients for the different APIs. Every API in Bluevia inherits from the same abstract class, implementing the particular logic for each of the APIs in the final, non-abstract class that is also the interface to the user of the API.</p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli">A parsing and serializing layer. This layer is responsible for parsing any data received from the remote end and populate the data model objects in the library with any data received, as well as for generating output streams that can be sent to the remote end from data contained in the library data model objects whenever it is necessary to send information to the server.</p>
+<p class="endli"></p>
+</li>
+</ul>
+<h3><a class="anchor" id="programming_guidelines_clients_basics_sec"></a>
+Clients basics</h3>
+<p>The main component of the Bluevia library is the Client, which represents the client side in a classic client-server schema. The library specify a REST Client for each one of the supported APIs (i.e. <a class="el" href="class_b_v___directory.html" title="Client interface for the REST binding of the Bluevia Directory Service.">BV_Directory</a>, <a class="el" href="class_b_v___mt_sms.html" title="Client interface for the REST binding of the Bluevia Trusted SMS MT Service.">BV_MtSms</a>), and defines the operations provided by their respective Bluevia APIs.</p>
+<p>According to this, the Bluevia library presents an easy programming model, concealing the communication mechanism from the developer. The way to work is:</p>
+<ul>
+<li>
+First, instantiate the corresponding client. You must provide the communication mechanism (as will be seen below) and the authorization information. </li>
+<li>
+Now use the operations defined by the client. </li>
+</ul>
+<h3><a class="anchor" id="programming_guidelines_working_modes_sec"></a>
+Working modes</h3>
+<p>The Bluevia library provides several modes for each REST client. LIVE, TEST and SANDBOX are the actual communication mechanism with BlueVia, which provides the functionality described by the APIs.</p>
+<p>These are the available working modes, defined in the <a class="el" href="class_b_v___mode.html" title="This class represent the three modes to support the different development environments of your app...">BV_Mode</a> class. The working mode must be selected in the instantiation of the client:</p>
+<ul>
+<li>
+<p class="startli"><a class="el" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a> <br/>
+In the Live environment your application uses the real network, which means that you will be able to send real transactions to real Movistar, O2 and Vivo customers in the applicable country.</p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli"><a class="el" href="class_b_v___mode.html#a8d7759e13bc0c420f06a21e219e9da76" title="In the Test environment your application uses the real network.">BV_Mode::TEST</a> <br/>
+The Test mode behave exactly like the Live mode, but the API calls are free of chargue, using a credits system. You are required to have a Movistar, O2 or Vivo mobile number to get this monthly credits.</p>
+<p class="endli"></p>
+</li>
+<li>
+<a class="el" href="class_b_v___mode.html#a0bda8698e06a60ea5d2db01f4c0cd488" title="No traffic Generated.">BV_Mode::SANDBOX</a> <br/>
+The Sandbox environment offers you the exact same experience as the Live environment except that no traffic is generated on the live network, meaning you can experiment and play until your heart’s content. </li>
+</ul>
+<p>For more information visit the <a href="https://bluevia.com/en/page/tech.howto.tut_APPtest" target="blank">Live, Test and Sandbox</a> section of BlueVia reference.</p>
+<h3><a class="anchor" id="programming_guidelines_authentication"></a>
+API Authentication</h3>
+<p>BlueVia requires both the user and your application to be identified and authenticated to allow applications use its APIs. BlueVia supports OAuth Protocol, a token-passing mechanims where users never have to reveal their passwords or credentials to the application. Bluevia library implements an OAuth client to supply developers an easy access to authentication procedure: <a class="el" href="blv_php_oauth_guide.html">Oauth reference</a>.</p>
+<p>For more information visit the <a href="https://bluevia.com/en/page/tech.howto.tut_APIauth" target="blank">API authentication</a> section of BlueVia reference.</p>
+<h3><a class="anchor" id="api_guides_sec"></a>
+API guides</h3>
 <p>The following guides explain the behavior of each Bluevia API, including code samples to start developing a simple application in an easy way:</p>
 <ul>
 <li>
-<a class="el" href="blv_php_sms_guide.html">SMS API</a> </li>
+<a class="el" href="blv_php_smsmt_guide.html">SMS MT API</a> </li>
 <li>
-<a class="el" href="blv_php_mms_guide.html">MMS API</a> </li>
+<a class="el" href="blv_php_smsmo_guide.html">SMS MO API</a> </li>
 <li>
-<a class="el" href="blv_php_directory_guide.html">User Context API</a> </li>
+<a class="el" href="blv_php_mmsmt_guide.html">MMS MT API</a> </li>
+<li>
+<a class="el" href="blv_php_mmsmo_guide.html">MMS MO API</a> </li>
+<li>
+<a class="el" href="blv_php_directory_guide.html">Directory API</a> </li>
 <li>
 <a class="el" href="blv_php_ad_guide.html">Advertising API</a> </li>
 <li>
@@ -155,7 +232,7 @@ API guides</h2>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Mon Jan 23 2012 13:31:21 for Bluevia by&#160;
+      <li class="footer">Generated on Thu May 24 2012 09:22:37 for PHPSDK by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
@@ -165,7 +242,7 @@ API guides</h2>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Bluevia: Payment API guide</title>
+<title>PHPSDK: Payment API guide</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -25,8 +25,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="BlueviaLogo.jpg"></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Bluevia&#160;<span id="projectnumber">1.5</span></div>
+   <div id="projectname">PHPSDK&#160;<span id="projectnumber">1.6</span></div>
   </td>
  </tr>
  </tbody>
@@ -75,103 +76,131 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1>Payment API guide </h1>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><p>The Bluevia Payment API is a set of functions that enables individual, atomic payments based on input economic information. This guide represents a practical introduction to developing applications in which the user wants to provide the Bluevia Payment functionality.</p>
-<h2><a class="anchor" id="blv_php_payment_sec1"></a>
-Bluevia Payment API: Making payment sessions</h2>
-<p>A payment session allows to charge a precise, economic amount, on the user's account.</p>
-<h3><a class="anchor" id="blv_php_payment_sec1_1"></a>
-Payment Client Basics</h3>
+<div class="textblock"><h2><a class="anchor" id="blv_payment_api_making_payment_session_sec"></a>
+Bluevia Payment API: making payment sessions</h2>
+<p>A payment session allows to charge a precise, economic amount, on the user's account. You can learn more about this API at Bluevia's <a href="https://bluevia.com/en/page/tech.APIs.PaymentAPI" target="blank">Payment API</a> reference.</p>
+<h3><a class="anchor" id="payment_client_basics_sec"></a>
+Payment client basics</h3>
 <p>A Payment client represents the client side in a classic client-server schema. This object wraps up the underlying REST client side functionality needed to perform requests against a REST server.</p>
-<p>Any Bluevia client perform requests and receive responses in a secure mode. Clients are authorized following the OAuth protocol. This security protocol enables users to grant third-party access to their resources without sharing their passwords. So clients store the authorization data -called security credentials- to grant access the server.</p>
-<p>Bluevia Payment API uses an extension of OAuth protocol to guarantee secure payment operations. For each payment the user makes he must complete the OAuth process to identify itself and get a valid acess token. These tokens will be valid for 48 hours and then will be dismissed. Following sections describe what security credentials we are talking about and the modifications this API needs.</p>
-<h3><a class="anchor" id="blv_php_payment_sec1_2"></a>
-Creating a Payment Client</h3>
-<p>As detailed in the Programming guidelines, the first step is to set up your <a class="el" href="class_bluevia_client.html">BlueviaClient</a> object providing the Consumer Key and Consumer Secret of your application:</p>
-<div class="fragment"><pre class="fragment">application_context = array(
-    <span class="stringliteral">&#39;app&#39;</span> =&gt; array(
-        <span class="stringliteral">&#39;consumer_key&#39;</span> =&gt; CONSUMER_KEY,
-        <span class="stringliteral">&#39;consumer_secret&#39;</span> =&gt; CONSUMER_SECRET        
-    )
-);
-$bv = <span class="keyword">new</span> <a class="code" href="class_bluevia_client.html">BlueviaClient</a>($mode,$application_context);
-</pre></div><p>Once configured, you are able to get your Payment API client:</p>
-<div class="fragment"><pre class="fragment"><span class="comment">// Get Payment API client</span>
-$payment = $bv-&gt;getService(<span class="stringliteral">&#39;Payment&#39;</span>);
-</pre></div><h2><a class="anchor" id="blv_php_payment_sec2"></a>
+<p>Any Bluevia client performs requests and receives responses in a secure mode. Clients are authorized following the OAuth protocol. This security protocol enables users to grant third-party access to their resources without sharing their passwords. So clients store the authorization data -called security credentials- to grant access to the server.</p>
+<p>Bluevia Payment API uses an extension of OAuth protocol to guarantee secure payment operations. For each payment the user makes he must complete the OAuth process to identify itself and get a valid access token. These tokens will be valid for 48 hours and then will be dismissed. Following sections describe what security credentials we are talking about and the modifications this API needs.</p>
+<h3><a class="anchor" id="creating_a_payment_client_sec"></a>
+Creating a Payment client: BV_Payment class</h3>
+<p>The first step in using the Payment client is to create a <a class="el" href="class_b_v___payment.html" title="Client interface for the REST binding of the Bluevia Payment Service.">BV_Payment</a> object. As we mentioned earlier this object could have two different working modes: i) as a client which sends requests to a real server, or ii) as a client which sends request and receives responses to/from a sandbox server.</p>
+<h4><a class="anchor" id="paymentclient_features_working_modes_sec"></a>
+Payment client features: working modes</h4>
+<p>When you create the client, you can specify various working modes: </p>
+<ul>
+<li>
+<p class="startli"><a class="el" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a> <br/>
+In the Live environment your application uses the real network, which means that you will be able to send real transactions to real Movistar, O2 and Vivo customers in the applicable country.</p>
+<p class="endli"></p>
+</li>
+<li>
+<a class="el" href="class_b_v___mode.html#a0bda8698e06a60ea5d2db01f4c0cd488" title="No traffic Generated.">BV_Mode::SANDBOX</a> <br/>
+The Sandbox environment offers you the exact same experience as the Live environment except that no traffic is generated on the live network, meaning you can experiment and play until your heart’s content. </li>
+</ul>
+<h2><a class="anchor" id="paymentclient_features_security_credentials_sec"></a>
 Payment API OAuth protocol</h2>
-<p>BlueVia Payment API uses OAuth as one of its authentication mechanism which enables websites and applications to access the BlueVia API's without end users disclosing their personal credentials. In order to grant access to the server any client has to be created passing the security credential as parameter in its constructor. These security credentials are managed internally and added as a HTTP header in every request sent to the server. Such Oauth security credentials are:</p>
-<p><b>Consumer key</b> The string identifying the application- you obtained when you registered your application within the provisioning portal.</p>
-<p><b>Consumer Secret </b> A secret -a string- used by the consumer to establish ownership of the consumer key.</p>
-<p><b>Access token </b> The token -OAuth access token- used by the client for granting access permissions to the server</p>
-<h3><a class="anchor" id="blv_php_payment_sec2_1"></a>
+<p>Bluevia uses OAuth as its authentication mechanism which enables websites and applications to access the Bluevia API's without end users disclosing their personal credentials. In order to grant access to the server any client has to be created passing the security credential as parameter in its constructor. These security credentials are managed internally and added as a HTTP header in every request sent to the server. Such OAuth security credentials are:</p>
+<ul>
+<li>
+<p class="startli"><b>Consumer key</b> <br/>
+The string identifying the application- you obtained when you registered your application within the provisioning portal.</p>
+<p class="endli"></p>
+</li>
+<li>
+<b>Consumer Secret</b> <br/>
+A secret -a string- used by the consumer to establish ownership of the consumer key. </li>
+</ul>
+<p>To authorize each payment operation a new valid access token has to be retrieved, completing this special OAuth process.</p>
+<h3><a class="anchor" id="paymentclient_features_code_example"></a>
+Payment client features: code example</h3>
+<p>Find below an example about how to create a <a class="el" href="class_b_v___payment.html" title="Client interface for the REST binding of the Bluevia Payment Service.">BV_Payment</a> client taking into account all information previously given. This snippet shows how to access a Bluevia server using OAuth security credentials</p>
+<div class="fragment"><pre class="fragment"><span class="comment">// BV_Mode::LIVE indicating the client works against a real Bluevia server.</span>
+<span class="keywordflow">try</span> {
+        $paymentClient = <span class="keyword">new</span> <a class="code" href="class_b_v___payment.html" title="Client interface for the REST binding of the Bluevia Payment Service.">BV_Payment</a>(<a class="code" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a>, <span class="stringliteral">&quot;consumer_key&quot;</span>, <span class="stringliteral">&quot;consumer_secret&quot;</span>);
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e){
+        print $e-&gt;getMessage();
+}
+</pre></div><h3><a class="anchor" id="retrieving_payment_request_token_sec"></a>
 Step 1: retrieving a request token</h3>
-<p>First, you have to retrieve a request token to be authorised by the user. In this case you have to use the PaymentRequestToken object, which includes the Payment info besides the usual request tokens params: </p>
-<div class="fragment"><pre class="fragment">$payment = $bv-&gt;getService(<span class="stringliteral">&#39;Payment&#39;</span>);
-<span class="keywordflow">if</span>($payment) {
-        <span class="keywordflow">try</span> {                           
-                <span class="comment">//Note that in this example we are not using the autoredirect mode                      </span>
-                $request_token = $payment-&gt;getRequestToken(10,<span class="stringliteral">&quot;EUR&quot;</span>,<span class="stringliteral">&quot;serviceId&quot;</span>,<span class="stringliteral">&quot;serviceName&quot;</span>);
-                var_dump($request_token);
-        } <span class="keywordflow">catch</span> (Exception $ex) {
-                print $ex-&gt;getMessage();
-        }
-}
-</pre></div><h3><a class="anchor" id="blv_php_payment_sec2_2"></a>
-Step 2: Take the user to BlueVia Connect</h3>
-<p>Take the user to BlueVia Connect to authorise the application as usual.</p>
-<h3><a class="anchor" id="blv_php_payment_sec2_3"></a>
-Step 3: Retrieveing an access token</h3>
-<p>With the obatined oauth_verifier, you can now get the accessToken from the user as follows:</p>
-<div class="fragment"><pre class="fragment"><span class="comment">// Create an instance of Zend_OAuth_Token_Request </span>
-<span class="comment">// with the data obtain previously via getRequestToken function</span>
-$request = <span class="keyword">new</span> Zend_Oauth_Token_Request();
-$request-&gt;setParams(array (
-        <span class="stringliteral">&#39;oauth_callback_confirmed&#39;</span>=&gt;<span class="stringliteral">&#39;true&#39;</span>,
-        <span class="stringliteral">&#39;oauth_token_secret&#39;</span>=&gt;<span class="stringliteral">&#39;xxxxxxxxxxxxxxxxxxx&#39;</span>,
-        <span class="stringliteral">&#39;oauth_token&#39;</span>=&gt;<span class="stringliteral">&#39;xxxxxxxxxxxxxxxxxx&#39;</span>
-));
-$access_token = $payment-&gt;getAccessToken(<span class="stringliteral">&quot;xxxxxx&quot;</span>,$request);
-var_dump($access_token);
-</pre></div><p>Note: the PaymentClient will store the access token internally to make calls to payment API using the same client. Additionally the access token is returned to to allow storing it persistentely for subsequent requests (remember the lifetime of the token is 48 hours). The are two ways in order to use a previosly obtained token: creating a BlueviaPaymentClient supplying it or using the setAccessToken function of the client.</p>
-<h2><a class="anchor" id="blv_php_payment_sec3"></a>
-PaymentClient features</h2>
-<h3><a class="anchor" id="blv_php_payment_sec3_1"></a>
-Payment function</h3>
-<p>The Payment function is a one shot function. Once used for a Token, given in the client constructor, it cannot be used again. If the result status of the process of payment is a success then a transaction identifier is returned that may be used in a eventual refund process that might be necessary. Otherwise, if the result status of the payment process is a failure then none is returned and a BlueviaClientException with detailed information is thrown. This function provides the main feature of the API, the making of payments.</p>
-<p>Function call sample follows:</p>
-<div class="fragment"><pre class="fragment">$payment_result = $payment-&gt;payment(<span class="stringliteral">&quot;10&quot;</span>,<span class="stringliteral">&quot;EUR&quot;</span>);
-var_dump($payment_result);
-</pre></div><p>It is possible to receive status notifications by providing BlueVia with an URI where notifications must be sent: </p>
-<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
-        $payment_result = $payment-&gt;payment(<span class="stringliteral">&quot;10&quot;</span>,<span class="stringliteral">&quot;EUR&quot;</span>,<span class="stringliteral">&quot;http://endpoint&quot;</span>,$correlator);
-        var_dump($payment_result);
-} <span class="keywordflow">catch</span> (Exception $ex) {
-        print $ex-&gt;getMessage();
-}
-</pre></div><p>Params:  <b>amount</b> : Amount to be charged, it may be an economic amount or a number of 'virtual units' (points, tickets, etc) (mandatory).  <b>currency</b> : Type of currency which corresponds with the amount above, following ISO 4217 (mandatory).  <b>endpoint</b> : The endpoint to receive notifications of payments operations (optional).  <b>correlator</b> : An string to correlate the requests and the notifications (optional).  Return: <b>paymentResult</b> : Array containing the identifier assigned by the server for the transaction and other information like the status.</p>
-<h3><a class="anchor" id="blv_php_payment_sec3_2"></a>
-Get Payment Status</h3>
-<p>The function getPaymentStatus allows to request the status of a previous payment operation. If the refund process is unsuccessful then an BlueviaClientException with detailed information is thrown.</p>
-<p>Use its transaction identifier as sole parameter. </p>
-<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
-        $payment_status = $payment-&gt;getPaymentStatus($payment_result[<span class="stringliteral">&#39;transactionId&#39;</span>]);
-        var_dump($payment_status);
-} <span class="keywordflow">catch</span> (Exception $ex) {
-        print $ex-&gt;getMessage();
-}
-</pre></div><h3><a class="anchor" id="blv_php_payment_sec3_3"></a>
-Cancel Payment</h3>
-<p>After having requested a token you can cancel the authorization for that token before making the payment, or cancel get status requests after the payment. If the cancel authorization process is unsuccessful then an BlueviaClientException with detailed information is thrown. </p>
-<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
-        $payment-&gt;cancelAuthorization();
-} <span class="keywordflow">catch</span> (Exception $ex) {
-        print $ex-&gt;getMessage();
-}
+<p>First, you have to retrieve a request token to be authorised by the user. In this case you have to use the getPaymentRequestToken function, which includes the Payment info besides the usual request tokens params:</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getPaymentRequestToken($amount, $currency, $name, $serviceId) 
+</pre></div><h3><a class="anchor" id="retrieving_payment_verification_sec"></a>
+Step 2: Take the user to Bluevia Connect</h3>
+<p>Take the user to Bluevia Connect to authorise the application as usual.</p>
+<h3><a class="anchor" id="retrieving_payment_access_token_sec"></a>
+Step 3: retrieveing an access token</h3>
+<p>With the obtained oauth_verifier, you can now get the accessToken from the user using the function:</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getPaymentAccessToken($oauthVerifier, $token=null, $secret=null) 
+</pre></div><p>Note: the Payment client will store the access token internally to make calls to payment API using the same client. Additionally the access token is returned to allow storing it persistentely for subsequent requests (remember the lifetime of the token is 48 hours). The are two ways in order to use a previosly obtained token: creating a new <a class="el" href="class_b_v___payment.html" title="Client interface for the REST binding of the Bluevia Payment Service.">BV_Payment</a> instance supplying it or using the BV_Payment::setTokens function of the client.</p>
+<h2><a class="anchor" id="paymentclient_features_funcitions"></a>
+Payment client features: making a payment</h2>
+<h3><a class="anchor" id="paymentclient_features_payment_function"></a>
+PaymentClient features : payment function</h3>
+<p>It's a once shot function. Once used for an OAuthToken, given in the client constructor, it cannot be used again to make a payment (but it can be used to retrieve the status of the operation). If the result status of the process of payment is a success then a transaction identifier is returned. Otherwise, if the result status of the payment process is a failure then none is returned and a <a class="el" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> with detailed information is thrown. This function provides the main feature of the API, the making of payments.</p>
+<p>It is possible to receive status notifications by providing Bluevia with an URI where notifications must be sent:</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function payment($amount, $currency, $endpoint, $correlator) 
+</pre></div><p>Params:<br/>
+ <b>amount</b> : Amount to be charged, it may be an economic amount or a number of 'virtual units' (points, tickets, etc) (mandatory). <br/>
+ <b>currency</b> : Type of currency which corresponds with the amount above, following ISO 4217 (mandatory). <br/>
+ <b>endpoint</b> : The endpoint to receive notifications of payments operations (optional). <br/>
+ <b>correlator</b> : An string to correlate the requests and the notifications (optional). <br/>
+ Return:<br/>
+ <b><a class="el" href="class_payment___result.html" title="Class representing the response of a previous payment.">Payment_Result</a></b> : A result containing the identifier assigned by the server for the transaction and other information like the status.<br/>
+ Throws:<br/>
+ An <a class="el" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> informs about errors encountered in the request/response.<br/>
+</p>
+<h4><a class="anchor" id="paymentclient_features_get_status_function"></a>
+Payment client features : get payment status</h4>
+<p>The function getPaymentStatus allows to request the status of a previous payment operation. If the refund process is unsuccessful then an BlueviaException with detailed information is thrown.</p>
+<p>Use its transaction identifier as sole parameter.</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getPaymentStatus($transactionId) 
+</pre></div><h4><a class="anchor" id="paymentclient_features_cancel_authorization_function"></a>
+Payment client features : cancel authorization function</h4>
+<p>After having requested a token you can cancel the authorization for that token before making the payment, or cancel get status requests after the payment. If the cancel authorization process is unsuccessful then an <a class="el" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> with detailed information is thrown.</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function cancelAuthorization()
+</pre></div><h4><a class="anchor" id="paymentclient_processes_code_example"></a>
+Bluevia Payment API: code examples</h4>
+<div class="fragment"><pre class="fragment"><span class="comment">// Make a payment session</span>
+
+<span class="keywordflow">try</span> {
+
+        <span class="comment">// 1. Create the client (you have to choose the mode and include the OAuth authorization values. No access token is needed)</span>
+        $paymentClient = <span class="keyword">new</span> <a class="code" href="class_b_v___payment.html" title="Client interface for the REST binding of the Bluevia Payment Service.">BV_Payment</a>(<a class="code" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a>, <span class="stringliteral">&quot;consumer_key&quot;</span>, <span class="stringliteral">&quot;consumer_secret&quot;</span>);
+
+        <span class="comment">// 2. OAuth process</span>
+        $requestToken = $paymentClient-&gt;getRequestToken(100, <span class="stringliteral">&quot;GBP&quot;</span>, <span class="stringliteral">&quot;bluevia&quot;</span>, <span class="stringliteral">&quot;service_id&quot;</span>);
+        <span class="comment">//...</span>
+        <span class="comment">//...</span>
+
+        <span class="comment">// Authorization in Bluevia Connect Portal</span>
+        <span class="comment">// Get OAuth verifier from GUI</span>
+        $oauth_verifier = xxxxxx;
+
+        <span class="comment">//...</span>
+        <span class="comment">//...</span>
+
+        $accessToken = $paymentClient-&gt;getAccessToken($oauth_verifier, $requestToken-&gt;key, $requestToken-&gt;secret);
+
+        <span class="comment">// 3. Make the payment</span>
+        $result = $paymentClient-&gt;payment(100, <span class="stringliteral">&quot;GBP&quot;</span>);
+        print <span class="stringliteral">&quot;Transaction ID: $result-&gt;transactionId&quot;</span>;
+
+
+        <span class="comment">// 4. Get Payment status</span>
+        $status = $paymentClient-&gt;getPaymentStatus($result-&gt;transactionId);
+        print <span class="stringliteral">&quot;Payment status &quot;</span> . $status-&gt;transactionStatus);          
+                
+}<span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e){
+        print <span class="stringliteral">&quot;Error in payment: &quot;</span>.$e-&gt;getMessage();
+} 
 </pre></div> </div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Mon Jan 23 2012 13:31:21 for Bluevia by&#160;
+      <li class="footer">Generated on Thu May 24 2012 09:22:37 for PHPSDK by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
@@ -181,7 +210,7 @@ Cancel Payment</h3>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">

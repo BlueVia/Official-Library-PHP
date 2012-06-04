@@ -1,82 +1,103 @@
 <?php
 
-### Set DEBUG true to see the http request and reply headers and content
+// Set DEBUG true to see the response content
 define('DEBUG',true);
 
-### Set the country shortcode to get the messages
-define('SHORTCODE',5698764);
+// Set your pear and php local path. 
+// You must edit this example and complete it with the path in your file system.
+$oldpath = set_include_path('/usr/local/share/pear:/usr/share/php:.');
 
-### Set your Zend Framework, pear and php local path
-$oldpath = set_include_path('.:/usr/local/zend/share/ZendFramework/library:/usr/local/zend/share/pear:/usr/share/php');
+// The path shown above is only for Unix users. If you are using Windows comment the line
+// and include this one instead.
+// $oldpath = set_include_path('.;C:\php\pear');
 
-### Set your BlueviaClient.php path
-include_once "../src/BlueviaClient.php";
+// Set your Includes.php path
+include_once "../sdk/Includes.php";
 
 // BlueVia provides three environments to support the different development stages of your app.
 // Sandbox for testing. Test Live for accessing the live network.
 // Note that test mode is free of charge, you only need  SMS and MMS API credits.
 // You can choose which of them to use depending on the API endpoint you need.
-$mode= BlueviaClient_Api_Constants::SANDBOX_MODE;
+$mode=BV_Mode::SANDBOX;
 
-// PHP SDK wraps any request to BlueVia API's by using a generic object BlueviaClient.
-// This object uses the Component Pattern to fetch any service required by the developer (oAuth, SMS, Directory or Advertising).
-// The BlueviaClient constructor requires an array containing the application consumer key, consumer secret and the access token data
+// The Mms MT constructor requires the application consumer key, consumer secret, token
+// and token secret. The Mms MO only needs the consumer key and secret.
 
-$application_context_2legged = array(
-    'app' => array(
-      'consumer_key' => 'vw12012654505986', 
-      'consumer_secret' => 'WpOl66570544' 
-)
-);
+$consumerKey = "vw12012654505986"; //CONSUMER_KEY,
+$consumerSecret = "WpOl66570544"; //CONSUMER_SECRET
 
-$bv = new BlueviaClient($mode,$application_context_2legged);
-if ($bv)
-{
-	$smsMO = $bv->getService('SmsMO');
-	if ($smsMO)
-	{
+$tokenAccess = "ad3f0f598ffbc660fbad9035122eae74"; //TOKEN,
+$tokenSecret = "4340b28da39ec36acb4a205d3955a853"; //TOKEN_SECRET,
 
-		try {
-			print "<table border=\"1\">";
+try{
 
-			// Get received messages
+	$smsMT= new BV_MTSms($mode,$consumerKey,$consumerSecret,$tokenAccess,$tokenSecret);
 
-			$received_messages = $smsMO->getMessages(SHORTCODE,true);
+	print "<table border=\"1\">";
 
-			// Show the returned information, only if DEBUG is set to true
 
-			if(DEBUG) {
-				print "<h1>Sms MO API</h1>";
-				print "<h3>Received Messages</h3>";
-				if ($received_messages){
-					$received_messages=json_decode($received_messages);
-					$received_messages=$received_messages->receivedSMS->receivedSMS;
 
-					foreach ($received_messages as $key => $value){
-						$number=$key+1;
-						print "<tr><td>Message ".$number."</td></tr>";
-						print "<tr><td>Text Message</td><td>".$value->message."</td></tr>";
-						print "<tr><td>Origin address</td><td>".$value->originAddress->phoneNumber."</td></tr>";
-						print "<tr><td>Destination address</td><td>".$value->destinationAddress->phoneNumber."</td></tr>";
-						print "<tr><td>Date-time</td><td>".$value->dateTime."</td></tr>";
-					}
-				}
+	// Set the shortcode where the sms will be sent
+	// Sending sms to a shortcode is only available on sandbox mode.
+	$shortcode='5698765';
 
-			}
-		} catch(Exception $e) {
-			print "<h1>Sms MO</h1>";
-			print "<h3>Received Messages</h3>";
-			print "<p>Exception retrieving SMS ".$e->getMessage()."</p>";
+	// To check SMS sent to your application following a polling strategy the first word
+	// in your sms text must be your application keyword (SANDBLUEDEMOS).
+	$text='SANDBLUEDEMOS Your message text goes here.';
+
+	// Send SMS
+	$messageId = $smsMT->send($shortcode,$text);
+
+	// Show the returned information, only if DEBUG is set to true
+
+	if (defined('DEBUG') && constant('DEBUG')) {
+		print "<h1>Sms MT API</h1>";
+		print "<h3>Send SMS</h3>";
+		if($messageId) {
+			print "<tr><td>Sms ID</td><td>".$messageId."</td></tr>";
 		}
+		print "</table>";
+	}
+} catch (Exception $e) {
+	print "<h1>Sms MT</h1>";
+	print "<h3>Send SMS</h3>";
+	print "<p> Exception sending SMS: ".$e->getMessage()."</p>";
+}
 
-		// Show the http request and reply , only if DEBUG is set to true
 
-		if (DEBUG){
-			print "<tr><td>Request</td><td>".$bv->getLastRequest()."</td></tr>";
-			print "<tr><td>Response</td><td>".$bv->getLastResponse()."</td></tr>";
+try {
+	print "<table border=\"1\">";
+
+	// Retrieve SMS delivery status
+	$smsMO= new BV_MoSms($mode,$consumerKey,$consumerSecret);
+
+	$smsInfo = $smsMO->getAllMessages($shortcode);
+
+	// Show the returned information, only if DEBUG is set to true
+
+	if (defined('DEBUG') && constant('DEBUG')) {
+		print "<h3>Message info</h3>";
+		if($smsInfo) {
+			foreach($smsInfo as $id =>$status){
+				print "<tr><td>Sms $id</td></tr>";
+				foreach($status as $key=>$value){
+					print "<tr><td>$key</td><td>".$value."</td></tr>";
+				}
+			}
 			print "</table>";
 		}
-
-		unset($smsMO);
 	}
+} catch (Exception $e) {
+	print "<h3>Delivery status</h3>";
+	print "<p>Exception retreiving the SMS get all messages: ".$e->getMessage()."</p>";
 }
+
+
+unset($smsMT);
+unset($smsMO);
+
+
+?>
+
+
+

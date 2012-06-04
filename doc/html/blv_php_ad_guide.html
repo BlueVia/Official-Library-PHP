@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Bluevia: Advertising API guide</title>
+<title>PHPSDK: Advertising API guide</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -25,8 +25,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="BlueviaLogo.jpg"></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Bluevia&#160;<span id="projectnumber">1.5</span></div>
+   <div id="projectname">PHPSDK&#160;<span id="projectnumber">1.6</span></div>
   </td>
  </tr>
  </tbody>
@@ -75,91 +76,130 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1>Advertising API guide </h1>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><p>This API enables your application or mobile website to include and advertisement adapted to the user's device screen size.</p>
-<p>If you want to understand how Mobile Advertising API works please read the BlueVia <a href="https://bluevia.com/en/knowledge/APIs.API-Guides.Advertising">Mobile Advertising API guide</a>, you can also get really into the details reading <a href="https://bluevia.com/en/knowledge/APIs.API-Reference.Advertising">Mobile Advertising API reference</a>.</p>
-<h2><a class="anchor" id="ad_client_set_up_sec"></a>
-Mobile Advertising API client set up</h2>
-<p>BlueVia uses OAuth as its authentication mechanism which enables websites and applications to access the BlueVia API's without end users disclosing their personal credentials. In order to grant access to the server any client has to be created passing the security credential as parameter in its constructor. These security credentials are managed internally and added as a HTTP header in every request sent to the server. Such Oauth security credentials are: </p>
+<div class="textblock"><h2><a class="anchor" id="blv_ad_api_retrievings_ads_sec"></a>
+Bluevia Advertising API: Retrieving advertisements</h2>
+<p>The Bluevia Advertising API is a set of functions which allows users to provide advertising -based on different advertisement types such as images or texts or similar elements- within their applications. This guide represents a practical introduction to developing applications in which the user wants to provide the Bluevia Advertising functionality. You can learn more about this API at Bluevia's <a href="https://bluevia.com/en/page/tech.APIs.AdvertisingAPI" target="blank">Advertising API</a> reference.</p>
+<h3><a class="anchor" id="ad_client_basics_sec"></a>
+Advertising client basics</h3>
+<p>An Advertising client represents the client side in a classic client-server schema. This object wraps up the underlying REST client side functionality needed to perform requests against a REST server.</p>
+<p>Any Bluevia client performs requests and receives responses in a secure mode. Clients are authorized following the OAuth protocol. This security protocol enables users to grant third-party access to their resources without sharing their passwords. So clients store the authorization data -called security credentials- to grant access to the server. The following sections describe what security credentials we are talking about.</p>
+<h3><a class="anchor" id="creating_ad_client_sec"></a>
+Creating an Advertising client: BV_Advertising class</h3>
+<p>The first step in using the Advertising client is to create an <a class="el" href="class_b_v___advertising.html" title="Client interface for the REST binding of the Bluevia Adverising Service.">BV_Advertising</a> object. As we mentioned earlier this object could have two different working modes: i) as a client which sends requests to a real server, or ii) as a client which sends requests and receives responses to/from a sandbox server.</p>
+<h4><a class="anchor" id="adclient_features_working_modes_sec"></a>
+Advertising client features: working modes</h4>
+<p>When you create the client, you can specify various working modes: </p>
 <ul>
 <li>
-<p class="startli"><b>Consumer key</b><br/>
- The string identifying the application- you obtained when you registered your application within the provisioning portal.</p>
+<p class="startli"><a class="el" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a> <br/>
+In the Live environment your application uses the real network, which means that you will be able to send real transactions to real Movistar, O2 and Vivo customers in the applicable country.</p>
 <p class="endli"></p>
 </li>
 <li>
-<p class="startli"><b>Consumer Secret</b><br/>
- A secret -a string- used by the consumer to establish ownership of the consumer key.</p>
+<p class="startli"><a class="el" href="class_b_v___mode.html#a8d7759e13bc0c420f06a21e219e9da76" title="In the Test environment your application uses the real network.">BV_Mode::TEST</a> <br/>
+The Test mode behave exactly like the Live mode, but the API calls are free of chargue, using a credits system. You are required to have a Movistar, O2 or Vivo mobile number to get this monthly credits.</p>
 <p class="endli"></p>
 </li>
 <li>
-<b>Access token</b><br/>
- The token -OAuth access token- used by the client for granting access permissions to the server </li>
+<a class="el" href="class_b_v___mode.html#a0bda8698e06a60ea5d2db01f4c0cd488" title="No traffic Generated.">BV_Mode::SANDBOX</a> <br/>
+The Sandbox environment offers you the exact same experience as the Live environment except that no traffic is generated on the live network, meaning you can experiment and play until your heart’s content. </li>
 </ul>
-<p>As detailed previosly, you have to set up your <a class="el" href="class_bluevia_client.html">BlueviaClient</a> object: </p>
-<div class="fragment"><pre class="fragment">application_context = array(
-    <span class="stringliteral">&#39;user&#39;</span> =&gt; array(
-        <span class="stringliteral">&#39;token_access&#39;</span> =&gt; $token,
-        <span class="stringliteral">&#39;token_secret&#39;</span> =&gt; $token_secret,
-    ),
-    <span class="stringliteral">&#39;app&#39;</span> =&gt; array(
-        <span class="stringliteral">&#39;consumer_key&#39;</span> =&gt; CONSUMER_KEY,
-        <span class="stringliteral">&#39;consumer_secret&#39;</span> =&gt; CONSUMER_SECRET        
-    )
-);
-$bv = <span class="keyword">new</span> <a class="code" href="class_bluevia_client.html">BlueviaClient</a>($mode,$application_context);
-</pre></div><p> Once configured, you are able to get your Mobile Advertising API client: </p>
-<div class="fragment"><pre class="fragment"><span class="comment">// Get Advertising API client</span>
-$advertising = $bv-&gt;getService(<span class="stringliteral">&#39;Advertising&#39;</span>);
-</pre></div><h3><a class="anchor" id="ad_two_legged_subsec"></a>
-AdvertisingClient features: Oauth 2-legged</h3>
-<p>Some applications will only use the Advertising API, which does not need to be given permissions by the final user. Bluevia supports Oauth authentication without oauth token, which is called 2-legged version. In this case the client just need the Consumer key and Consumer secret credentials, so the <a class="el" href="class_bluevia_client.html">BlueviaClient</a> object must be constructed this way: </p>
-<div class="fragment"><pre class="fragment">$application_context_2legged = array(
-    <span class="stringliteral">&#39;app&#39;</span> =&gt; array(
-      <span class="stringliteral">&#39;consumer_key&#39;</span> =&gt; CONSUMER_KEY,
-      <span class="stringliteral">&#39;consumer_secret&#39;</span> =&gt; CONSUMER_SECRET        
-    )
-  );
-$bv = <span class="keyword">new</span> <a class="code" href="class_bluevia_client.html">BlueviaClient</a>($mode,$application_context_2legged);  
-</pre></div><h2><a class="anchor" id="ad_getting_ad_sec"></a>
-Getting an Ad</h2>
-<p>Once configured, your client is ready to get advertisements according to the user's device screen resolution. You don't have to worry about that, just set up the UserAgent before requesting the advertisement. </p>
-<div class="fragment"><pre class="fragment">$response = $advertising-&gt;request(
-        array(
-            <span class="stringliteral">&#39;user_agent&#39;</span> =&gt; <span class="stringliteral">&#39;Mozilla50&#39;</span>,
-            <span class="stringliteral">&#39;ad_request_id&#39;</span> =&gt; <span class="stringliteral">&#39;103712010081010020bf31d750&#39;</span>,
-            <span class="stringliteral">&#39;ad_space&#39;</span> =&gt; <span class="stringliteral">&#39;10371&#39;</span>,
-            <span class="stringliteral">&#39;ad_presentation&#39;</span>=&gt;<span class="stringliteral">&#39;0101&#39;</span>,
-            <span class="stringliteral">&#39;protection_policy&#39;</span> =&gt; <span class="charliteral">&#39;1&#39;</span>,
-        )
-);
-</pre></div><p>The ad space is the identifier you got when requesting your API key.</p>
-<p>On the :ad_presentation you have to select the ad format text ("'0104") or image banner ("'0101").</p>
-<p>Take into account that the Protection Policy sets the rules for adult advertising, please be careful. </p>
-<table  border="1">
-<tr>
-<th>protection_policy </th><th>Policy applied  </th></tr>
-<tr>
-<td>1 </td><td>Low, moderately explicit content (I am youth; you can show me moderately explicit content)  </td></tr>
-<tr>
-<td>2 </td><td>Safe, not rated content (I am a kid, please, show me only safe content)  </td></tr>
-<tr>
-<td>3 </td><td>High, explicit content (I am an adult; I am over 18 so you can show me any content including very explicit content)  </td></tr>
-</table>
-<h2><a class="anchor" id="ad_showing_ad_sec"></a>
-Showing and Ad</h2>
-<p>Once you retrieved the ad, you can get the advertisement and click link to include it on your mobile website: </p>
-<div class="fragment"><pre class="fragment"><span class="comment">// print response</span>
-<span class="keywordflow">if</span> (is_array($response)) {
-    print <span class="stringliteral">&quot;&lt;p style=&#39;color:green&#39;&gt; SUCCESS!: &lt;/p&gt; </span>
-<span class="stringliteral">        &lt;textarea rows=&#39;10&#39; cols=&#39;140&#39;&gt;&quot;</span>. print_r($response,1) . <span class="stringliteral">&quot;&lt;/textarea&gt;&lt;br/&gt;&quot;</span>;
-} <span class="keywordflow">else</span> {
-    print <span class="stringliteral">&#39;&lt;p style=&quot;color:red&quot;&gt; ERROR &lt;/p&gt;&#39;</span>;
+<h4><a class="anchor" id="adclient_features_security_credentials"></a>
+Advertising client features: security credentials</h4>
+<p>Bluevia uses OAuth as its authentication mechanism which enables websites and applications to access the Bluevia API's without end users disclosing their personal credentials. In order to grant access to the server any client has to be created passing the security credential as parameter in its constructor. These security credentials are managed internally and added as a HTTP header in every request sent to the server. Such OAuth security credentials are: </p>
+<ul>
+<li>
+<p class="startli"><b>Consumer key</b> <br/>
+The string identifying the application- you obtained when you registered your application within the provisioning portal.</p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli"><b>Consumer secret</b> <br/>
+A secret -a string- used by the consumer to establish ownership of the consumer key.</p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli"><b>Access token</b> <br/>
+The token -a string- used by the client for granting access permissions to the server.</p>
+<p class="endli"></p>
+</li>
+<li>
+<b>Access token secret</b> <br/>
+The secret of the access token. </li>
+</ul>
+<p>To get consumer credentials for your application, visit the API authentication reference for more information about <a href="https://bluevia.com/en/page/tech.howto.tut_APIauth" target="blank">getting Consumer credentials</a>.</p>
+<p>You can learn how to obtain the access tokens <a class="el" href="blv_php_oauth_guide.html">here</a>.</p>
+<h4><a class="anchor" id="adclient_features_security_credentials_2l"></a>
+Advertising client features: OAuth 2-legged</h4>
+<p>Some applications will only use the Advertising API, which does not need to be given permissions by the final user. Bluevia supports OAuth authentication without OAuth token, which is called 2-legged mode. In this case the client just need the <b>Consumer key</b> and <b>Consumer secret</b> credentials.</p>
+<h4><a class="anchor" id="adclient_features_code_examples_sec"></a>
+Advertising client features: code example</h4>
+<p>Find below an example on how to create an OAuth 3-legged Advertising client taking into account all the information previously given.</p>
+<div class="fragment"><pre class="fragment"><span class="comment">// BV_Mode::LIVE indicating the client works against a real Bluevia server.</span>
+<span class="keywordflow">try</span> {
+        $adClient = <span class="keyword">new</span> <a class="code" href="class_b_v___advertising.html" title="Client interface for the REST binding of the Bluevia Adverising Service.">BV_Advertising</a>(<a class="code" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a>, <span class="stringliteral">&quot;consumer_key&quot;</span>, <span class="stringliteral">&quot;consumer_secret&quot;</span>, <span class="stringliteral">&quot;access_token&quot;</span>, <span class="stringliteral">&quot;access_token_secret&quot;</span>);
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e){
+        print $e-&gt;getMessage();
 }
+</pre></div><p>And OAuth 2-legged Advertising client</p>
+<div class="fragment"><pre class="fragment"><span class="comment">// BV_Mode::LIVE indicating the client works against a real Bluevia server.</span>
+<span class="keywordflow">try</span> {
+        $adClient = <span class="keyword">new</span> <a class="code" href="class_b_v___advertising.html" title="Client interface for the REST binding of the Bluevia Adverising Service.">BV_Advertising</a>(<a class="code" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a>, <span class="stringliteral">&quot;consumer_key&quot;</span>, <span class="stringliteral">&quot;consumer_secret&quot;</span>);
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e){
+        print $e-&gt;getMessage();
+}
+</pre></div><h3><a class="anchor" id="retrieving_simple_ad_sec"></a>
+Retrieving an advertisement</h3>
+<p>The Bluevia Advertising API can provide two different kinds of advertisements: text and images. When retrieving a simple advertisement the user could to specify a set of request parameters such as keywords, protection policy, etc.</p>
+<p>Once you have instantiated a <a class="el" href="class_b_v___advertising.html" title="Client interface for the REST binding of the Bluevia Adverising Service.">BV_Advertising</a> object, you can start using the getAdvertising methods. Depending on the authentication you are using (3-legged or 2-legged) you should use one of the two different versions of the function::</p>
+<div class="fragment"><pre class="fragment">        <span class="keyword">public</span> function getAdvertising( $adSpace, $adRequestId = null,$adPresentation = null,$keywords = null, $protectionPolicy = null,$userAgent = null,$country=null)
+</pre></div><div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getAdvertising2L( $adSpace, $country,$targetUserId = null,$adRequestId = null, $adPresentation = null,$keywords = null,$protectionPolicy = null,$userAgent = null)
+</pre></div><p>The <b>$adSpace</b> (Keyword) parameter -that is the identifier you obtained when you registered your application within the Bluevia portal- is mandatory.<br/>
+ The <b>$country</b> parameter indicates the country where the target user is located. Must follow ISO-3166. (optional). <br/>
+ The <b>$targetUserId</b> is a string to identify the target user. (optional, and only available in 3-legged mode). <br/>
+ The <b>$adRequestId</b> an unique id for the request (optional: if it is not set, the SDK will generate it automatically).<br/>
+ The <b>$adPresentation</b> parameter is optional. It specifies what type of advertisement the user wants to retrieve. Use Ad_presentation constants so you know which are the allowed values for this parameter<br/>
+ The <b>$keywords</b> parameter provides the key words the advertisement is related to. This parameter is optional too. Array of strings (keywords)<br/>
+ The <b>$protectionPolicy</b> allows an user to apply the desired the adult control policy. $protectionPolicy is mandatory. Use <a class="el" href="class_protection___policy.html" title="Class to indicate the adult control policy for your advertising.">Protection_Policy</a> constants so you know which are the allowed values for this parameter. In case you are not interested in setting a specific value for any of the optional parameters, just set it to null.<br/>
+ The <b>$userAgent</b> parameter specifies the user agent of the client to show the advertisement.<br/>
+</p>
+<p>For a more detailed description please see the <a class="el" href="class_b_v___advertising.html" title="Client interface for the REST binding of the Bluevia Adverising Service.">BV_Advertising</a> object.</p>
+<h4><a class="anchor" id="processing_ad_response_sec"></a>
+Retrieving an advertisement: processing the response</h4>
+<p>The <a class="el" href="class_ad___response.html">Ad_Response</a> object contains, an Array of <a class="el" href="class_creative___element.html">Creative_Element</a>, which are the objects that represent the advertisement.The Creative Element stores a string containing the representation of the advertisement (text or an URL of an image); and other string corresponding to the URL for a 'click2wap' interaction.</p>
+<h3><a class="anchor" id="advertising_code_example_sec"></a>
+Bluevia Advertising API: code example</h3>
+<div class="fragment"><pre class="fragment"><span class="comment">// Get a simple Ad using the Ad API</span>
+
+
+<span class="keywordflow">try</span> {
+
+        <span class="comment">// 1. Create the client (you have to choose the mode and include the OAuth authorization values. Remember no access token is needed for two-legged access)</span>
+        $adClient = <span class="keyword">new</span> <a class="code" href="class_b_v___advertising.html" title="Client interface for the REST binding of the Bluevia Adverising Service.">BV_Advertising</a>(<a class="code" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a>, <span class="stringliteral">&quot;consumer_key&quot;</span>, <span class="stringliteral">&quot;consumer_secret&quot;</span>);
+
+        <span class="comment">// 2. Request an advertisement. We need at least the mandatory parameter $adSpace (ie, 12921).</span>
+        $response = $adClient-&gt;getAdvertising2l(<span class="stringliteral">&quot;12921&quot;</span>, <span class="stringliteral">&quot;UK&quot;</span>, null, <span class="stringliteral">&quot;adRequestId&quot;</span>, 
+                <a class="code" href="class_ad___presentation.html#af002e64a6e7831649f0365b88c0c5b32" title="Image advertising.">Ad_Presentation::IMAGE</a>, null, <a class="code" href="class_protection___policy.html#a6cc829d0d7d025763fd31ddc87182cc7" title="Safe, not rated content (I am a kid, please, show me only safe content).">Protection_Policy::SAFE</a>, null);
+
+        <span class="comment">// 3. Process the response</span>
+        <span class="keywordflow">if</span> (!empty($response)){
+
+                $firstAd = $response;
+                $ad=$firstAd-&gt;creativeElement;
+                $imageUrl = $ad-&gt;value;
+                $interactionUrl = $ad-&gt;interaction;
+                
+                <span class="comment">// Do stuff</span>
+        }
+
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> $e) {
+        print <span class="stringliteral">&quot;Error getting advertising: &quot;</span>. $e-&gt;getMessage();
+} 
 </pre></div> </div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Mon Jan 23 2012 13:31:21 for Bluevia by&#160;
+      <li class="footer">Generated on Thu May 24 2012 09:22:37 for PHPSDK by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
@@ -169,7 +209,7 @@ Showing and Ad</h2>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">

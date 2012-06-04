@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Bluevia: OAuth API guide</title>
+<title>PHPSDK: OAuth reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -25,8 +25,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="BlueviaLogo.jpg"></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">Bluevia&#160;<span id="projectnumber">1.5</span></div>
+   <div id="projectname">PHPSDK&#160;<span id="projectnumber">1.6</span></div>
   </td>
  </tr>
  </tbody>
@@ -72,100 +73,143 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="header">
   <div class="headertitle">
-<h1>OAuth API guide </h1>  </div>
+<h1>OAuth reference </h1>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><p>BlueVia APIs require authentication for applications to get information and send data. Normally, an application is acting on behalf of a final user, so both the user and your application must be identified and authenticated. You can get full information about it at <a href="https://bluevia.com/en/knowledge/getStarted.Authentication">Bluevia OAuth guide</a></p>
-<h2><a class="anchor" id="req_token"></a>
-Get your request token</h2>
-<p>Most of requests when accessing Bluevia API are associated to a specific user, so when a <a class="el" href="class_bluevia_client.html">BlueviaClient</a> object is created both user token and user token secret must be provided to identify user on behalf of whom the application wants to access BlueVia APIs. To get the users authorization for using BlueVia API's on their behalf, you shall do as follows. By using your API key, you have to create a request token that is required to start the OAuth process. For example:</p>
-<p>As detailed in the Programming guidelines you have to set up your <a class="el" href="class_bluevia_client.html">BlueviaClient</a> object:</p>
-<div class="fragment"><pre class="fragment">$application_context = array(
-    <span class="stringliteral">&#39;app&#39;</span> =&gt; array(
-        <span class="stringliteral">&#39;consumer_key&#39;</span> =&gt; CONSUMER_KEY,
-        <span class="stringliteral">&#39;consumer_secret&#39;</span> =&gt; CONSUMER_SECRET        
-    )
-);
-$bv = <span class="keyword">new</span> <a class="code" href="class_bluevia_client.html">BlueviaClient</a>($mode,$application_context);
-</pre></div><p> Once configured, you are able to get your Oauth API client: </p>
-<div class="fragment"><pre class="fragment">$oauth=$bv-&gt;getService(<span class="stringliteral">&#39;Oauth&#39;</span>);
-<span class="keywordflow">try</span>{
-        $request_token = $oauth-&gt;getRequestToken($callBackUrl);
-}
-<span class="keywordflow">catch</span>(Exception $e){
-        print <span class="stringliteral">&quot;Exception: &quot;</span>.$e-&gt;getMessage();
-}
-</pre></div><p>Both token and token_secret must be saved in your application because oAuth process will require it later. To get user authorization using the oauth_token from your request token (only for <a href="#out_of_band">"OutOfBand"</a> and <a href="#web_oauth">"WebOauth"</a> modes), you have to take the user to BlueVia Connect including your oauth_token as a request parameter. For example: </p>
-<div class="fragment"><pre class="fragment">https:<span class="comment">//connect.bluevia.com/authorise?oauth_token=20101022141902000172</span>
-</pre></div><p> User must be redirected to BlueVia Connect in order to confirm his identity and to authorize your application's special conditions. After that, a PIN code is received. Note that callback is an important parameter and according to it, authorization progress shall be done in one of the three ways explained below. <a class="anchor" id="out_of_band"></a> </p>
-<h3><a class="anchor" id="out_of_band"></a>
-OutOfBand authorization</h3>
-<p>Callback parameter it's not defined (as shown below). In this case the library will set the callback parameter to "oob". You have to ask the user to enter the PIN code (oauth_verifier) in your app. Note that your users will need to copy and paste the PIN code manually, so be clear when you request it to be sure they do not get confused. </p>
-<div class="fragment"><pre class="fragment">$request_token = $oauth-&gt;getRequestToken();
-</pre></div><p> <a class="anchor" id="web_oauth"></a> </p>
-<h3><a class="anchor" id="web_oauth"></a>
-WebOauth authorization</h3>
-<p>Callback parameter is a defined callback URL. You will receive the oauth_verifier as a request parameter at your callback. </p>
-<div class="fragment"><pre class="fragment">$request_token = $oauth-&gt;getRequestToken(<span class="stringliteral">&quot;http://foo.bar/bluevia/get_access&quot;</span>)
-</pre></div> <h3><a class="anchor" id="sms_oauth"></a>
-SMSOauth authorization</h3>
-<p>Finally Bluevia supports a variation of OAuth process where the user is not using the browser to authorize the application. Instead he will receive an SMS containing he PIN code (oauth_verifier). To use this SMS handshake, getRequestToken request must pass the user's MSISDN (phone number) in callback parameter. After the user had received the PIN code, the application should allow him to enter it and request the access token. </p>
-<div class="fragment"><pre class="fragment">$request_token = $oauth-&gt;getRequestToken(<span class="stringliteral">&quot;34609090909&quot;</span>)
-</pre></div> <h2><a class="anchor" id="access_token"></a>
-Obtain the access token</h2>
-<p>With the obtained PIN code (oauth_verifier), you can now get the accessToken from the user as follows: </p>
-<div class="fragment"><pre class="fragment"><span class="keywordflow">try</span> {
-        <span class="comment">// Note that in this case, the request token would be taken from the cookie </span>
-        <span class="comment">// that has previously stored by the library.</span>
-        $access_token = $oauth-&gt;getAccessToken($oauth_verifier);
-        <span class="keywordflow">if</span>($access_token) var_dump($access_token);
-} <span class="keywordflow">catch</span> (Exception $e) {
-        print <span class="stringliteral">&quot;Exception: &quot;</span>.$e-&gt;getMessage();
-</pre></div><p> You can obtain the oauth_verifier from the request from BlueVia to your callback URL: </p>
-<div class="fragment"><pre class="fragment">$oauth_verifier = $_GET[<span class="stringliteral">&#39;oauth_verifier&#39;</span>];
-</pre></div><p> The following example will show how to obtain the access token providing the verification code and the request token parameters.</p>
-<div class="fragment"><pre class="fragment">$request_token = <span class="keyword">new</span> Zend_Oauth_Token_Request();
-$request_token-&gt;setParams(array(
-                        <span class="stringliteral">&#39;oauth_callback_confirmed&#39;</span> =&gt; <span class="stringliteral">&#39;true&#39;</span>,
-                        <span class="stringliteral">&#39;oauth_token_secret&#39;</span> =&gt; <span class="stringliteral">&#39;xxxxxxxxxxxxxxxx&#39;</span>,
-                        <span class="stringliteral">&#39;oauth_token&#39;</span> =&gt; <span class="stringliteral">&#39;xxxxxxxxxxxxxxxxx&#39;</span>));
-<span class="keywordflow">try</span>{
-        $access_token = $oauth-&gt;getAccessToken($oauth_verifier,$request_token);
-        <span class="keywordflow">if</span>($access_token) var_dump($access_token);
-} <span class="keywordflow">catch</span> (Exception $e) {
-        print <span class="stringliteral">&quot;Exception: &quot;</span>.$e-&gt;getMessage();
-}
-</pre></div> <h2><a class="anchor" id="oauth_making_authorized_request_sec"></a>
-Making an authorized API request</h2>
-<p>Once your have obtained the user access token, you will be ready to use it on the Unica object that will be your BlueVia API's client.</p>
-<p>To associate the access token and include the Authorization header for that user you have to do the following: </p>
-<div class="fragment"><pre class="fragment">$application_context = array(
-    <span class="stringliteral">&#39;user&#39;</span> =&gt; array(
-        <span class="stringliteral">&#39;token_access&#39;</span> =&gt; $token,
-        <span class="stringliteral">&#39;token_secret&#39;</span> =&gt; $token_secret,
-    ),
-    <span class="stringliteral">&#39;app&#39;</span> =&gt; array(
-        <span class="stringliteral">&#39;consumer_key&#39;</span> =&gt; CONSUMER_KEY,
-        <span class="stringliteral">&#39;consumer_secret&#39;</span> =&gt; CONSUMER_SECRET        
-    )
-);
-$bv = <span class="keyword">new</span> <a class="code" href="class_bluevia_client.html">BlueviaClient</a>($mode,$application_context);
-</pre></div><p>When you make an authorized API request the following exceptions may be thrown: </p>
+<div class="textblock"><h2><a class="anchor" id="oauth_protocol_sec"></a>
+Bluevia OAuth protocol</h2>
+<p>The Bluevia OAuth API is a set of functions which allows applications to retrieve request and access tokens to complete the OAuth authentication protocol, necessary to be able to get and send data to Bluevia APIs. This guide represents a practical introduction to include the OAuth protocol in Bluevia applications.</p>
+<p>OAuth definitions:</p>
 <ul>
 <li>
-<b><a class="el" href="class_bluevia_client___exception___parameters.html">BlueviaClient_Exception_Parameters</a></b>: thrown when some expected parameters are missing. </li>
+<b>User:</b> Customer of Telefonica who has an account with Bluevia and can, therefore, use the underlying services via a Bluevia API. </li>
 <li>
-<b><a class="el" href="class_bluevia_client___exception___response.html">BlueviaClient_Exception_Response</a></b>: thrown when response has an error. </li>
+<b>Consumer:</b> An application that uses OAuth to access the Bluevia APIs on behalf of the User. </li>
 <li>
-<b><a class="el" href="class_bluevia_client___exception___client.html">BlueviaClient_Exception_Client</a></b>: thrown when a generic client error ocurres. </li>
+<b>Consumer Key:</b> A value used by the Consumer to identify itself with Bluevia. </li>
 <li>
-<b><a class="el" href="class_bluevia_client___exception___server.html">BlueviaClient_Exception_Server</a></b>: thrown when the server returns an error </li>
+<b>Consumer Secret:</b> Secret used by the Consumer to guarantee the ownership of the consumer key. </li>
+<li>
+<b>Request Token:</b> A value used by the Consumer to obtain authorization from the User. The Request Token is exchanged for an Access Token when permission is granted. </li>
+<li>
+<b>Access Token:</b> A value used by the Consumer to call Bluevia APIs on behalf of the User (instead of using the User’s credentials) </li>
 </ul>
-</div></div>
+<p>The Consumer credentials are unique for each application registered in the Bluevia portal, and can be obtained by requesting an API key. Visit the API authentication reference for more information about <a href="https://bluevia.com/en/page/tech.howto.tut_APIkeys" target="blank">getting Consumer credentials</a>.</p>
+<h3><a class="anchor" id="oauth_client_basics_sec"></a>
+OAuth client basics</h3>
+<p>An OAuth client represents the client side in a classic client-server schema. This object wraps up the underlying REST client side functionality needed to perform requests against a REST server.</p>
+<h4><a class="anchor" id="creating_oauth_client_sec"></a>
+Creating an OAuth client: BV_OAuth class</h4>
+<p>The first step in using the OAuth client is to create an <a class="el" href="class_b_v___o_auth.html" title="This class provides access to the set of functions to complete the OAuth workflow to retrieve the OAu...">BV_OAuth</a> object. As we mentioned earlier this object could have two different working modes: i) as a client which sends requests to a real server, or ii) as a client which sends request and receives responses to/from a sandbox server.</p>
+<h4><a class="anchor" id="oauthclient_features_working_modes_sec"></a>
+OAuth client features: working modes</h4>
+<p>When you create the client, you can specify various working modes: </p>
+<ul>
+<li>
+<p class="startli"><a class="el" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a> <br/>
+In the Live environment your application uses the real network, which means that you will be able to send real transactions to real Movistar, O2 and Vivo customers in the applicable country.</p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli"><a class="el" href="class_b_v___mode.html#a8d7759e13bc0c420f06a21e219e9da76" title="In the Test environment your application uses the real network.">BV_Mode::TEST</a> <br/>
+The Test mode behave exactly like the Live mode, but the API calls are free of chargue, using a credits system. You are required to have a Movistar, O2 or Vivo mobile number to get this monthly credits.</p>
+<p class="endli"></p>
+</li>
+<li>
+<a class="el" href="class_b_v___mode.html#a0bda8698e06a60ea5d2db01f4c0cd488" title="No traffic Generated.">BV_Mode::SANDBOX</a> <br/>
+The Sandbox environment offers you the exact same experience as the Live environment except that no traffic is generated on the live network, meaning you can experiment and play until your heart’s content. </li>
+</ul>
+<h4><a class="anchor" id="oauthclient_features_code_examples_sec"></a>
+OAuth client features: code example</h4>
+<p>Find below an example on how to create an OAuth Client taking into account all the information previously given.</p>
+<div class="fragment"><pre class="fragment"><span class="comment">// BV_Mode::LIVE indicating the client works against a real server.</span>
+<span class="keywordflow">try</span> {
+        $oauthClient = <span class="keyword">new</span> <a class="code" href="class_b_v___o_auth.html" title="This class provides access to the set of functions to complete the OAuth workflow to retrieve the OAu...">BV_OAuth</a>(<a class="code" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a>, <span class="stringliteral">&quot;consumer_key&quot;</span>, <span class="stringliteral">&quot;consumer_secret&quot;</span>);
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> e){
+        print $e-&gt;getMessage();
+}
+</pre></div><h3><a class="anchor" id="oauth_process_sec"></a>
+OAuth process</h3>
+<p>OAuth process consist of three steps:</p>
+<ul>
+<li>
+Retrieve a request token. </li>
+<li>
+Request user authorization by sending the user to Bluevia. </li>
+<li>
+Exchange the request token for an access token. </li>
+</ul>
+<p>The Consumer credentials and the resulting Access Token will be supplied to the different clients to allow them to connect to the Bluevia APIs. The OAuth client contains the functions necessary to complete these operations:</p>
+<h4><a class="anchor" id="retrieving_request_token_sec"></a>
+Step 1: retrieving a request token</h4>
+<p>Once you have instantiated a <a class="el" href="class_b_v___o_auth.html" title="This class provides access to the set of functions to complete the OAuth workflow to retrieve the OAu...">BV_OAuth</a> object, you have to retrieve a request token to be authorised by the user. oauth_callback is an important parameter and according to it, authorization progress shall be done in one of the three ways explained below.</p>
+<h4><a class="anchor" id="retrieving_request_token_sec_oob"></a>
+OutOfBand OAuth</h4>
+<p>In this case, callback parameter is not defined. The user must be followed to Bluevia Portal to authorise the application.</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getRequestToken()
+</pre></div><p>The getRequestToken operation needs too the Consumer credentials (token and secret) which have already been supplied in the construction of the <a class="el" href="class_b_v___o_auth.html" title="This class provides access to the set of functions to complete the OAuth workflow to retrieve the OAu...">BV_OAuth</a> object. For a more detailed description please see the API Reference.</p>
+<p>The obtained request token contains the verification url to access to the Bluevia portal. Depending on the mode used, it will be available for final users (LIVE) or developers (TEST and SANDBOX). The application should enable the user (customer) to visit the url in any way, where he will have to introduce its credentials (user and password) to authorise the application to connect Bluevia APIs on his behalf. Once permission has been granted, the user will obtain a PIN code necessary to exchange the request token for the access token.</p>
+<p>You can get the verification Url from the returned object by the getRequestToken method:</p>
+<div class="fragment"><pre class="fragment">$requestToken=$oauthClient-&gt;getResquestToken();
+$url=$requestToken-&gt;authUrl;
+</pre></div><h3><a class="anchor" id="web_oauth"></a>
+WebOAuth authorization</h3>
+<p>Callback parameter is a defined callback URL. You will receive the oauth_verifier as a request parameter at your callback.</p>
+<div class="fragment"><pre class="fragment">$oauthClient-&gt;getRequestToken(<span class="stringliteral">&quot;http://foo.bar/bluevia/get_access&quot;</span>)
+</pre></div><p>The user will be redirect to the Bluevia's verification Url, so he can authorize the application. Once he has finished, he will be redirect again to the application so he can complete the OAuth's proccess. Your application will recieve the oauth_verifier in the url as a query string. To get the oauth_verifier, once your application is executing again you can use this code:</p>
+<div class="fragment"><pre class="fragment">$oauthVerifier=$_GET[<span class="stringliteral">&#39;oauth_verifier&#39;</span>];
+</pre></div><p>Request Tokens are stored in a cookie, so if you want to use this authorization method, cookies must be enabled. If you don't want your application to be redirect automatically to the Bluevia Portal, you can set the autoredirect param to false:</p>
+<div class="fragment"><pre class="fragment">$oauthClient-&gt;getRequestToken(<span class="stringliteral">&quot;http://foo.bar/bluevia/get_access&quot;</span>,<span class="keyword">false</span>)
+</pre></div><p>To get back the request tokens you can use the following code:</p>
+<div class="fragment"><pre class="fragment">$requestToken = unserialize($_COOKIE[<span class="stringliteral">&#39;req_token&#39;</span>]);
+</pre></div><p>There is a complete example of this authorization method (getAccessToken included), in example/OAuthExample.php.</p>
+<h4><a class="anchor" id="retrieving_request_token_sec_sms"></a>
+SMS OAuth</h4>
+<p>Bluevia supports a variation of OAuth process where the user is not using the browser to authorize the application. Instead he will receive a SMS containing the PIN code (oauth_verifier). To use SMS handshake getRequestToken request must pass the user's MSISDN (phone number) as parameter. After the user had received the PIN code, the application should allow him to enter it and request the access token.</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getRequestTokenSmsHandshake($phoneNumber)
+</pre></div><h4><a class="anchor" id="retrieving_access_token_sec"></a>
+Step 2: retrieveing an access token</h4>
+<p>The getAccessToken function has the following signature:</p>
+<div class="fragment"><pre class="fragment"><span class="keyword">public</span> function getAccessToken($oauthVerifier, $token, $tokenSecret)
+</pre></div><p>The oauthVerifier parameter corresponds to the PIN code obtained by the user in the Bluevia portal. The $token and $tokenSecret parameters refer to the request token previously retrieved by the getRequestToken method. If you used the web OAuth authorization, it's not necessary to introduce this parameters (remember request tokens are stored ina cookie).</p>
+<h3><a class="anchor" id="oauth_store_tokens"></a>
+Storing the access token</h3>
+<p>Each application only has to go through the OAuth process one for each user (customer) and the resulting access token is valid for any subsequent call to the Bluevia APIs. Because of this the access token is required to be stored persistently in any way.</p>
+<h3><a class="anchor" id="oauth_code_example_sec"></a>
+Bluevia OAuth API: Code example</h3>
+<div class="fragment"><pre class="fragment"><span class="comment">//-----------------------------------------------</span>
+<span class="comment">// Get permission to access Bluevia APIs using the OAuth API</span>
+
+<span class="keywordflow">try</span> {
+
+        <span class="comment">// 1. Create the client (you have to choose the mode and include the Consumer credentials)</span>
+        $oauthClient = <span class="keyword">new</span> <a class="code" href="class_b_v___o_auth.html" title="This class provides access to the set of functions to complete the OAuth workflow to retrieve the OAu...">BV_OAuth</a>(<a class="code" href="class_b_v___mode.html#abc1c5fcc41548942acf01ed32d31f4f0" title="In the Live environment your application uses the real network.">BV_Mode::LIVE</a>, <span class="stringliteral">&quot;consumer_key&quot;</span>, <span class="stringliteral">&quot;consumer_secret&quot;</span>);
+
+        <span class="comment">// 2. Retrieve the request token</span>
+        $requestToken = $oauthClient-&gt;getRequestToken();
+
+        <span class="comment">// 3. Open the received url in a browser </span>
+        $url = $requestToken-&gt;authUrl;
+        header(<span class="stringliteral">&quot;Location: &quot;</span>.$url);
+        exit();
+
+        <span class="comment">// 4. Retrieve an access token</span>
+        $token = $requestToken-&gt;token;
+        $secret = $requestToken-&gt;secret;
+        $verifier = <span class="stringliteral">&quot;000000&quot;</span>; <span class="comment">/* Get verifier from GUI */</span>
+        $accessToken = $oauthClient-&gt;getAccessToken($verifier, $token, $secret);
+
+        <span class="comment">// 5. Store the token </span>
+
+
+} <span class="keywordflow">catch</span> (<a class="code" href="class_bluevia___exception.html" title="Base class for Exceptions.">Bluevia_Exception</a> e) {
+        print $e-&gt;getMessage();
+        }
+</pre></div> </div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Mon Jan 23 2012 13:31:21 for Bluevia by&#160;
+      <li class="footer">Generated on Thu May 24 2012 09:22:37 for PHPSDK by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
@@ -175,7 +219,7 @@ $bv = <span class="keyword">new</span> <a class="code" href="class_bluevia_clien
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
