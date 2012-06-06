@@ -61,7 +61,7 @@ You can find a set of complete sample apps on this repository:
 
 - [OAuth](https://github.com/BlueVia/Official-Library-PHP/tree/master/OAuthExample.php) : Demostrates OAuth process negotiation
 - [SMS send](https://github.com/BlueVia/Official-Library-PHP/tree/master/samples/SmsMTExample.php) : Sends SMS and a Check Delivery Status
-- [SMS receive](https://github.com/BlueVia/Official-Library-PHP/tree/master/samples/SmsMOExample.php : Receive SMS sample.
+- [SMS receive](https://github.com/BlueVia/Official-Library-PHP/tree/master/samples/SmsMOExample.php) : Receive SMS sample.
 - [MMS send](https://github.com/BlueVia/Official-Library-PHP/tree/master/samples/MmsMTExample.php) : Sends MMS and a Check Delivery Status
 - [MMS receive](https://github.com/BlueVia/Official-Library-PHP/tree/master/samples/MmsMOExample.php) : Receive MMS sample.
 - [PaymentExample](https://github.com/BlueVia/Official-Library-PHP/tree/master/samples/PaymentExample.php) : Performs a Payment.
@@ -81,7 +81,8 @@ You can get your own application keys for you app at [BlueVia] (https://bluevia.
 BlueVia APIs authentication is based on [OAuth 1.0](https://bluevia.com/en/page/tech.howto.tut_APIauth)
 To get the users authorization for using BlueVia API's on their behalf, you shall do as follows.
 By using your API key, you have to create a request token that is required to start the OAuth process. For example:
-
+
+
 	// Create the client (you have to choose the mode (LIVE|SANDBOX|TEST) and include the Consumer credentials)
 	$oauthClient = new BV_OAuth(BV_Mode::LIVE, "my_consumer_key", "my_consumer_secret");
 	// Retrieve the request token
@@ -103,7 +104,8 @@ The user will be redirect to the Bluevia's verification Url, so he can authorize
 	$oauthVerifier=$_GET['oauth_verifier'];
 
 Request Tokens are stored in a cookie, so if you want to use this authorization method, cookies must be enabled. If you don't want your application to be redirect automatically to the Bluevia Portal, you can set the autoredirect param to false.
-
+
+
 ##### OutOfBand authorisation
 To get user authorization using the oauth_token from your request token you have to take the user to BlueVia. The obtained request token contains the verification url to access to the BlueVia portal. Depending on the mode used, it will be available for final users (LIVE) or developers (TEST and SANDBOX). The application should enable the user (customer) to visit the url in any way, where he will have to introduce its credentials (user and password) to authorise the application to connect BlueVia APIs behalf him. Once permission has been granted, the user will obtain a PIN code necessary to exchange the request token for the access token:
 
